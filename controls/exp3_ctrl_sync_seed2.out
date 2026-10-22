@@ -1,0 +1,1 @@
+mode=sync seed=2 out_spikes=1140 group=1.70 rest=0.57 ratio=2.97 | rest noise-path=0.30 rest pattern-path(never spikes)=0.27 unchanged=True | ratio noise-path only=0.84

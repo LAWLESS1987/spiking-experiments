@@ -1,0 +1,1 @@
+mode=async seed=2 out_spikes=0 group=0.60 rest=0.55 ratio=1.09 | rest noise-path=0.28 rest pattern-path(never spikes)=0.27 unchanged=True | ratio noise-path only=0.92

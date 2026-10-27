@@ -1,3 +1,13 @@
+---
+pretty_name: Spiking Neural Network Experiments
+tags:
+  - spiking-neural-networks
+  - snntorch
+  - brian2
+  - neuromorphic
+  - mnist
+---
+
 # Spiking neural network experiments
 
 A small set of from-scratch spiking-neural-network experiments that run on a laptop CPU —
@@ -50,3 +60,18 @@ ideas: present each pattern alone in early blocks, or give each neuron a differe
 
 Bars before runs, nulls and failures kept beside the successes, controls where an effect is
 claimed. The aim is a record you can check, not a highlight reel.
+
+
+---
+
+## Part of one system — each piece usable on its own
+
+These repositories are independent instruments that also compose into a single apparatus for **building and honestly auditing trustworthy multi-intelligence systems**. Any one can be used standalone; together they form the stack:
+
+- **Governed core** — [covenant](https://huggingface.co/Lawless1987/covenant): a self-governing multi-agent system with an ethics gate inside the transaction path.
+- **Observability & provenance** — [threefold](https://huggingface.co/Lawless1987/threefold) (the L-lens layer over Jacobian Lens) and [threefold-memory](https://huggingface.co/Lawless1987/threefold-memory) (its persistent, provenance-tracked memory): every action measured and recorded under one task identity.
+- **Measurement instruments** — [contradiction-probe](https://huggingface.co/Lawless1987/contradiction-probe) and [flinch-observability](https://huggingface.co/Lawless1987/flinch-observability), with the session records [flinch-record](https://huggingface.co/Lawless1987/flinch-record) and [grokflinch](https://huggingface.co/Lawless1987/grokflinch): preregistered, blind-scored tests of AI behaviour that embody the covenant's rule — *investigate a signal, never convict on one*.
+- **Neuromorphic research** — [spiking-experiments](https://huggingface.co/Lawless1987/spiking-experiments): from-scratch spiking-network experiments with the pass/fail bar declared before each run.
+- **Ledger surface** — [Sentinel-Witness](https://huggingface.co/Lawless1987/Sentinel-Witness): the trading / ledger dashboard.
+
+**This repository's place in it:** the neuromorphic research lab behind the covenant's stdlib spiking reflexes.

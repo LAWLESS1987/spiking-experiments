@@ -1,0 +1,61 @@
+{
+ "what": "Each result this repository states, the exact sentence where it stands, how it is reproduced, and whether it can be reproduced from this repository. Checked fail-closed by research_grade.py. The experiments need PyTorch, snnTorch and Brian2 (requirements.txt) and are not run in CI; 'custodian-run' means the author ran the shipped script, not that CI did.",
+ "as_of": "2026-11-07",
+ "claims": [
+  {
+   "id": "SE-K1",
+   "claim": "A 2-layer spiking network goes from chance to 91.2% MNIST accuracy after 2 short passes.",
+   "source": "README.md",
+   "exact": "9.0% before training (chance) → **91.2%** after 2 short passes, in 19 s.",
+   "reproduce": "python exp1_mnist_snn.py",
+   "reproduction_status": "custodian-run",
+   "limits": "One seeded run on one CPU; no run log is shipped, and the 19 s depends on the machine. Library versions are pinned, but floating-point results can still vary with threads and builds."
+  },
+  {
+   "id": "SE-K2",
+   "claim": "Ten LIF neurons stay silent below threshold and fire at rising rates above it.",
+   "source": "README.md",
+   "exact": "0 spikes/s at 5–14 mV; 45→155 spikes/s at 17–32 mV.",
+   "reproduce": "python exp2_brian2_neurons.py",
+   "reproduction_status": "custodian-run",
+   "limits": "A deterministic demonstration of a textbook neuron model, not a learning result; no run log is shipped."
+  },
+  {
+   "id": "SE-K3",
+   "claim": "The first STDP run was null: the output neuron never fired.",
+   "source": "README.md",
+   "exact": "**null** — the output neuron never fired",
+   "reproduce": "python exp3_stdp_run1_null.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Kept as a null; no run log is shipped."
+  },
+  {
+   "id": "SE-K4",
+   "claim": "The second STDP run reached a 1.42x ratio and missed the pre-declared 2x bar.",
+   "source": "README.md",
+   "exact": "ratio 1.42×. **The 2× bar was not met.**",
+   "reproduce": "python exp3_stdp_run2_30s.py",
+   "reproduction_status": "custodian-run",
+   "limits": "One seed; no run log is shipped."
+  },
+  {
+   "id": "SE-K5",
+   "claim": "The third STDP run, 120 s as the only declared change, reached 3.1x and met the bar.",
+   "source": "README.md",
+   "exact": "pattern 1.76, rest 0.56 — **3.1×. Met.**",
+   "reproduce": "python exp3_stdp.py",
+   "reproduction_status": "custodian-run",
+   "data": ["controls/exp3_ctrl_sync_seed1.out"],
+   "limits": "The shipped control log for sync inputs, seed 1, reads group=1.76 rest=0.56 ratio=3.15, the same run's figures. Three seeds each of sync and async controls are shipped; the claim rests on one seed."
+  },
+  {
+   "id": "SE-K6",
+   "claim": "Three designs for three-neuron competition (exp5, its +3 mV tweak, exp6) did not pass their pre-committed bars.",
+   "source": "README.md",
+   "exact": "**Not passed** — see below.",
+   "reproduce": "python exp5_competing_neurons.py",
+   "reproduction_status": "custodian-run",
+   "limits": "A reported failure, with the same failure shape each time; tuning was stopped rather than searched. No run logs are shipped."
+  }
+ ]
+}

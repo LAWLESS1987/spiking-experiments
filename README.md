@@ -62,6 +62,25 @@ ideas: present each pattern alone in early blocks, or give each neuron a differe
 Bars before runs, nulls and failures kept beside the successes, controls where an effect is
 claimed. The aim is a record you can check, not a highlight reel.
 
+## Auditability baseline
+
+```
+python -I research_grade.py      # standard library only; exit 0 only if every check holds
+```
+
+One portable file shared across these repositories. It drives each of its checks red and green on a synthetic case,
+then checks this repository and prints what it examined:
+
+- **Claims** (`docs/CLAIMS_INDEX.json`): each result above, the exact sentence where it stands and the script that
+  reproduces it. All six are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because they
+  need PyTorch, snnTorch and Brian2; it only checks that every script parses. Only run 3 of exp3 has its figures in a
+  shipped log (`controls/exp3_ctrl_sync_seed1.out`).
+- **Retractions** (`docs/RETRACTED.json`): empty. Nothing has been withdrawn; the nulls and failures are reported,
+  not retracted.
+- **Manifest** (`MANIFEST.sha256`): every tracked file pinned by sha256 (text LF-normalized, images raw).
+
+Passing means the results are auditable, not that they are true or that a rerun will match to the last digit.
+
 
 ---
 

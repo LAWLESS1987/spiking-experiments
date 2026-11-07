@@ -1,0 +1,7 @@
+{
+ "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty on 2026-11-07: the history (6 commits) holds no correction, and the README keeps nulls and failures beside the successes rather than withdrawing them.",
+ "window": 10,
+ "coverage_floor": 5,
+ "expect_dirs": ["docs", "controls"],
+ "retractions": []
+}

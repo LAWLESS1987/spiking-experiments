@@ -1,5 +1,5 @@
 {
- "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when two were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix) and SE-R2 (a bar for every experiment).",
+ "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when three were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix), SE-R2 (a bar for every experiment) and SE-R3 (what sets the ~1.9x ratio).",
  "window": 10,
  "coverage_floor": 5,
  "expect_dirs": [
@@ -38,6 +38,25 @@
    "refuted_by": "Reading exp1_mnist_snn.py and exp2_brian2_neurons.py, 2026-11-09.",
    "patterns": [
     "pass/fail bar declared before\\s+(it\\s+ran|each\\s+run)"
+   ],
+   "allow": [
+    "docs/RETRACTED.json"
+   ],
+   "records": [
+    "README.md"
+   ]
+  },
+  {
+   "id": "SE-R3",
+   "date": "2026-11-09",
+   "claim": "That the ~1.9x shared by three inhibition topologies was a ceiling on learning, so the next change belonged in the plasticity rule (the LTP threshold).",
+   "verbatim": [
+    "The one named redesign still unrun is the LTP threshold / lower background rate -- a change to\nthe PLASTICITY rule, which is where the three converging results now point."
+   ],
+   "truth": "What sets the ratio (plasticity; multiplicative normalisation cannot change it) still holds. What it measures does not: exp14-17 show the score is 1.07 at t = 0 before any learning, its rise is in the burst synapses, and its denominator (inputs 60-99) holds burst synapses that never fire. Within inputs 0-59 the groups are learned: burst-synapse selectivity passed a pre-registered test on new seeds 9-16 (exp17).",
+   "refuted_by": "exp14-exp17, 2026-11-09 (prereg/ and the exp14-17 logs in this repository).",
+   "patterns": [
+    "where the three converging\\s+results now point"
    ],
    "allow": [
     "docs/RETRACTED.json"

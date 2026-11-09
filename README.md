@@ -45,6 +45,10 @@ Run any experiment with that interpreter, e.g. `.venv/Scripts/python.exe exp1_mn
 | `exp10_warmup.py` | 60 s of normalisation, then consolidated forgetting. | Normalise **0/8**, warmup-forget **0/8**: the network stayed alive but selectivity collapsed. (`exp10_warmup.png`) |
 | `exp11_inhib_pop.py` | A dedicated inhibitory population (Diehl & Cook). | Direct **0/8**, inhibitory population **0/8**; per-seed ratios within 0.08 of each other (`exp11_out.txt`). |
 | `exp12_mahowald_wta.py` | A single global inhibitory node (Mahowald's O(N) winner-take-all). | Direct **0/8**, global node **0/8**; per-seed ratios within 0.08 of each other (`exp12_out.txt`). |
+| `exp14_shuffled_null.py` | A null asked for on the HF forum: same bursts, but each fires 20 random inputs from 0-59. | Ratio 1.64 against 1.84; pre-registered reading "mostly by construction". (`exp14_out.txt`) |
+| `exp15_desync_null.py` | The null as worded: burst spikes keep their input and count, at independent random times. | Ratio 1.07; outputs nearly silent (0-9 spikes), so its "pattern learning" verdict is set aside. (`exp15_out.txt`) |
+| `exp16_rescore.py` | Reruns all three conditions saving weights at t = 0 and at the end (measurement only). | The score is 1.07 before any learning; the rise is in the burst synapses. (`exp16_out.txt`) |
+| `exp17_selectivity_new_seeds.py` | Burst-synapse selectivity, pre-registered on new seeds 9-16. | **PASS**: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8. (`exp17_out.txt`) |
 
 ### exp3, every run kept
 - **Run 1** (`exp3_stdp_run1_null.py`, 10 mV, 30 s): **null** — the output neuron never fired
@@ -197,6 +201,39 @@ the PLASTICITY rule, which is where the three converging results now point. (Har
 the 16 seed-arch tasks across processes for speed; result-identical, numpy backend unchanged, serial versions
 frozen in git at the pre-registration commits, in the lab's history rather than this extract.)
 
+**Read again 2026-11-09 (SE-R3).** The paragraph above is kept as written. What sets the ratio stands; what it
+was taken to mean does not. It treated the shared ~1.9x as a ceiling on learning and said the LTP threshold is
+"where the three converging results now point". exp14-17 below show the ratio mostly separates inputs that burst
+from inputs that don't, and that within the bursting inputs the groups are learned.
+
+### exp14-exp17: the ratio's yardstick (2026-11-09)
+
+A reader on the Hugging Face forum (topic 191599) proposed a null for the ~1.9x: no 20 inputs ever bursting
+together, scored the same way. Each run below has its pre-registration in `prereg/`, committed in the lab before the
+code and the code before the run; the lab's commit history is not part of this extract.
+
+- **exp14, shuffled null.** Same burst times, but each burst fires 20 random inputs from 0-59. Ratio 1.64 against the
+  real run's 1.84, real above it on 7/8 seeds; pre-registered reading "mostly by construction". It keeps 20 inputs
+  firing together, so it is not the reader's null as worded.
+- **exp15, the null as worded.** Burst spikes keep their input and count but move to independent random times. Ratio
+  1.07, below the real run on 8/8; the pre-registered reading is "mostly pattern learning". The outputs nearly stopped
+  firing (0-9 spikes per output in 120 s, against 103-178), so that verdict is set aside after the fact: the
+  pre-registration had no check that the network was still firing.
+- **exp16, rerun saving weights (measurement only).** Reproduces all 24 earlier ratios. The score is 1.07 at t = 0 in
+  every condition, before any learning. The exp15 weights barely moved (0.0016 mean change per burst synapse,
+  against 0.144 in the real run). Noise synapses alone stay near their start in every condition, so the rise is in
+  the burst synapses, and the denominator (inputs 60-99) holds burst synapses that never fire.
+- **A measure chosen after exp16 (`exp16_posthoc_selectivity.py`, `exp16_posthoc2.py`).** Within inputs 0-59: the
+  claiming output's burst-synapse weight on its group over its weight on the other two groups. Seeds 1-8, which
+  suggested it: 1.13 at t = 0 to 2.55 in the real run; 1.05 in the shuffled null.
+- **exp17, that measure on new seeds 9-16, pre-registered.** Pass needs, each on at least 7 of 8: end selectivity
+  >= 2.0, above its own start, above the 95th percentile of 1000 random relabelings of inputs 0-59.
+  **PASS: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8.** Seed 13 reached 1.87. Shuffled null
+  mean 1.14 against the real run's 2.50.
+
+One architecture, sixteen seeds. What this changes: the 2x bar of exp5-12 was set on a ratio that mostly separates
+inputs that burst from inputs that don't; within the bursting inputs, the fixed groups are learned.
+
 ## Method notes
 
 Bars before runs, nulls and failures kept beside the successes, controls where an effect is
@@ -212,11 +249,11 @@ One portable file shared across these repositories. It drives each of its checks
 then checks this repository and prints what it examined:
 
 - **Claims** (`docs/CLAIMS_INDEX.json`): each result above, the exact sentence where it stands and the script that
-  reproduces it. All twelve are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because
+  reproduces it. All sixteen are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because
   they need PyTorch, snnTorch and Brian2; it only checks that every script parses. Three have their figures in a
-  shipped log: exp3 run 3 (`controls/exp3_ctrl_sync_seed1.out`), exp11 (`exp11_out.txt`) and exp12
-  (`exp12_out.txt`).
-- **Retractions** (`docs/RETRACTED.json`): two, recorded 2026-11-09 (see Corrections). Nulls and failures are
+  shipped log: exp3 run 3 (`controls/exp3_ctrl_sync_seed1.out`), exp11 (`exp11_out.txt`), exp12
+  (`exp12_out.txt`) and exp14-17 (`exp14_out.txt` to `exp17_out.txt`; exp16 and exp17 also ship their weights).
+- **Retractions** (`docs/RETRACTED.json`): three, recorded 2026-11-09 (see Corrections). Nulls and failures are
   reported, not retracted.
 - **Manifest** (`MANIFEST.sha256`): every tracked file pinned by sha256 (text LF-normalized, images raw).
 
@@ -233,6 +270,11 @@ Each withdrawn sentence is quoted as it stood, with what is true beside it.
 - **SE-R2 (2026-11-09).** The opening said each experiment "was written with its **pass/fail bar declared before it
   ran**", and the list of repositories below said these were experiments "with the pass/fail bar declared before
   each run". exp1 and exp2 declare no bar; they are demonstrations. Every learning experiment has one. SE-R2.
+- **SE-R3 (2026-11-09).** The exp11-12 synthesis read the three topologies' shared ~1.9x as a ceiling on learning
+  and named the LTP threshold as "where the three converging results now point". What sets the ratio (plasticity;
+  normalisation cannot change it) still holds. What it measures does not: it starts at 1.07 before any learning, its
+  rise is in the burst synapses, and its denominator holds burst synapses that never fire. Within the bursting
+  inputs the groups are learned (exp17, pre-registered on new seeds). See exp14-exp17 above. SE-R3.
 
 
 ---

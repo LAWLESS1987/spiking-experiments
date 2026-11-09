@@ -1,0 +1,66 @@
+﻿.venv\Scripts\python.exe : WARNING    'i' is an internal variable of group 'synapses', but also exists in the run 
+namespace with the value 39. The internal variable will be used. 
+[brian2.groups.group.Group.resolve.resolution_conflict]
+At line:1 char:345
++ ... = Get-Date; .venv\Scripts\python.exe -X utf8 exp15_desync_null.py *>  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING    'i' ...ution_conflict]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 19. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 19. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 39. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 59. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 19. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 39. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 59. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+exp15: coincidence-free (desync) null, seeds [1, 2, 3, 4, 5, 6, 7, 8], against exp14's real column (reading rule fixed first in PREREG_exp15; 4 parallel workers, numpy backend)
+
+seed 1: desync fail claim=[1, 1, 2] spk=[3, 9, 0] ratio=1.01  |  exp14 real 1.83  shuffled 1.62  |  gap(real-desync)=0.82
+seed 2: desync fail claim=[1, 2, 1] spk=[0, 0, 1] ratio=1.0  |  exp14 real 1.56  shuffled 1.58  |  gap(real-desync)=0.56
+seed 3: desync fail claim=[2, 2, 1] spk=[0, 1, 1] ratio=1.13  |  exp14 real 1.92  shuffled 1.75  |  gap(real-desync)=0.79
+seed 4: desync fail claim=[0, 2, 2] spk=[6, 4, 2] ratio=1.08  |  exp14 real 1.86  shuffled 1.66  |  gap(real-desync)=0.78
+seed 5: desync fail claim=[1, 0, 1] spk=[5, 1, 1] ratio=1.04  |  exp14 real 1.9  shuffled 1.59  |  gap(real-desync)=0.86
+seed 6: desync fail claim=[0, 2, 1] spk=[2, 3, 0] ratio=1.12  |  exp14 real 1.91  shuffled 1.69  |  gap(real-desync)=0.79
+seed 7: desync fail claim=[0, 1, 1] spk=[4, 1, 1] ratio=1.17  |  exp14 real 1.9  shuffled 1.77  |  gap(real-desync)=0.73
+seed 8: desync fail claim=[0, 0, 1] spk=[3, 1, 0] ratio=1.03  |  exp14 real 1.83  shuffled 1.48  |  gap(real-desync)=0.8
+
+mean real 1.839 ; mean desync 1.073 ; desync/real 0.583 ; gap > 0 on 8/8 seeds
+descriptive: mean exp14 shuffled 1.643 ; desync - shuffled -0.570
+READING (pre-registered): MOSTLY PATTERN LEARNING (gap > 0 on >= 7/8 AND mean desync <= 1.3)
+saved exp15_desync_null.png

@@ -1,0 +1,80 @@
+﻿.venv\Scripts\python.exe : WARNING    'i' is an internal variable of group 'synapses', but also exists in the run 
+namespace with the value np.int64(9). The internal variable will be used. 
+[brian2.groups.group.Group.resolve.resolution_conflict]
+At line:1 char:345
++ ... = Get-Date; .venv\Scripts\python.exe -X utf8 exp14_shuffled_null.py * ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING    'i' ...ution_conflict]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 39. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 19. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(17). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_1', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    't' is an internal variable of group 'synapses_2', but also exists in the run namespace with the value 
+np.float64(119.8). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+INFO       Failed to vectorise code, falling back on Python loop: note that this will be very slow! Switch to another 
+code generation target for best performance (e.g. cython). First line is: v_post = clip(_lio_1 + v_post, _lio_2, 
+_lio_3) [brian2.codegen.generators.numpy_generator]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 19. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(56). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 39. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(26). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 59. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(52). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 19. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(6). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(51). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 59. 
+The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+WARNING    'i' is an internal variable of group 'synapses', but also exists in the run namespace with the value 
+np.int64(41). The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+exp14: shuffled-burst null vs real, seeds [1, 2, 3, 4, 5, 6, 7, 8] (reading rule fixed first in PREREG_exp14; 4 parallel workers, numpy backend)
+
+seed 1: real fail claim=[0, 1, 2] spk=[118, 162, 165] ratio=1.83  |  null fail claim=[1, 1, 1] spk=[111, 170, 126] ratio=1.62  |  gap=0.21
+seed 2: real fail claim=[1, 2, 1] spk=[103, 135, 138] ratio=1.56  |  null fail claim=[1, 2, 1] spk=[120, 151, 126] ratio=1.58  |  gap=-0.02
+seed 3: real fail claim=[2, 0, 1] spk=[137, 141, 178] ratio=1.92  |  null fail claim=[2, 2, 1] spk=[106, 148, 162] ratio=1.75  |  gap=0.17
+seed 4: real fail claim=[0, 2, 1] spk=[133, 152, 157] ratio=1.86  |  null fail claim=[2, 2, 0] spk=[144, 142, 162] ratio=1.66  |  gap=0.2
+seed 5: real fail claim=[0, 2, 1] spk=[144, 162, 138] ratio=1.9  |  null fail claim=[1, 0, 1] spk=[109, 158, 129] ratio=1.59  |  gap=0.31
+seed 6: real fail claim=[0, 2, 1] spk=[158, 145, 152] ratio=1.91  |  null fail claim=[0, 2, 1] spk=[128, 158, 153] ratio=1.69  |  gap=0.22
+seed 7: real fail claim=[0, 2, 1] spk=[144, 150, 154] ratio=1.9  |  null fail claim=[0, 1, 1] spk=[116, 159, 149] ratio=1.77  |  gap=0.13
+seed 8: real fail claim=[0, 2, 1] spk=[163, 143, 140] ratio=1.83  |  null fail claim=[0, 0, 1] spk=[145, 114, 111] ratio=1.48  |  gap=0.35
+
+REPRODUCTION: real ratios equal exp11 direct on 8/8 seeds
+mean real 1.839 ; mean null 1.643 ; null/real 0.893 ; gap > 0 on 7/8 seeds
+READING (pre-registered): MOSTLY BY CONSTRUCTION (mean null >= 0.8 x mean real)
+saved exp14_shuffled_null.png

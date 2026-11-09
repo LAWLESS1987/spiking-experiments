@@ -1,6 +1,6 @@
 {
  "what": "Each result this repository states, the exact sentence where it stands, how it is reproduced, and whether it can be reproduced from this repository. Checked fail-closed by research_grade.py. The experiments need PyTorch, snnTorch and Brian2 (requirements.txt) and are not run in CI; 'custodian-run' means the author ran the shipped script, not that CI did.",
- "as_of": "2026-11-07",
+ "as_of": "2026-11-09",
  "claims": [
   {
    "id": "SE-K1",
@@ -45,7 +45,9 @@
    "exact": "pattern 1.76, rest 0.56 — **3.1×. Met.**",
    "reproduce": "python exp3_stdp.py",
    "reproduction_status": "custodian-run",
-   "data": ["controls/exp3_ctrl_sync_seed1.out"],
+   "data": [
+    "controls/exp3_ctrl_sync_seed1.out"
+   ],
    "limits": "The shipped control log for sync inputs, seed 1, reads group=1.76 rest=0.56 ratio=3.15, the same run's figures. Three seeds each of sync and async controls are shipped; the claim rests on one seed."
   },
   {
@@ -55,7 +57,70 @@
    "exact": "**Not passed** — see below.",
    "reproduce": "python exp5_competing_neurons.py",
    "reproduction_status": "custodian-run",
-   "limits": "A reported failure, with the same failure shape each time; tuning was stopped rather than searched. No run logs are shipped."
+   "limits": "A reported failure; tuning was stopped rather than searched. Superseded by exp7 (SE-R1): this code drops the noise->output synapses, and the reported failure shape was one seed on that code. Kept as the record. No run logs are shipped.",
+   "tombstones": [
+    "SE-R1"
+   ]
+  },
+  {
+   "id": "SE-K7",
+   "claim": "On corrected code across seeds 1-8, an early blocked curriculum passes no more seeds than the exp6 control.",
+   "source": "README.md",
+   "exact": "Control **0/8**, curriculum **0/8**: not kept.",
+   "reproduce": "python exp7_curriculum.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-10-20 in the author's lab. No run log is shipped; the figures are in the README as recorded."
+  },
+  {
+   "id": "SE-K8",
+   "claim": "Uniform forgetting in place of normalisation passes no seed and silences the network.",
+   "source": "README.md",
+   "exact": "Normalise **0/8**, forget **0/8**: forgetting overshot and silenced the network.",
+   "reproduce": "python exp8_forget.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-10-20 in the author's lab. No run log is shipped; the figures are in the README as recorded."
+  },
+  {
+   "id": "SE-K9",
+   "claim": "Consolidation-gated forgetting passes no seed (a cold start); normalisation sits near 1.9x.",
+   "source": "README.md",
+   "exact": "Normalise **0/8**, consolidate **0/8**: a cold start silenced it; normalisation sits near 1.9×.",
+   "reproduce": "python exp9_consolidate.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-10-20 in the author's lab. No run log is shipped; the figures are in the README as recorded."
+  },
+  {
+   "id": "SE-K10",
+   "claim": "Warmup then consolidated forgetting passes no seed; selectivity collapses.",
+   "source": "README.md",
+   "exact": "Normalise **0/8**, warmup-forget **0/8**: the network stayed alive but selectivity collapsed.",
+   "reproduce": "python exp10_warmup.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-10-20 in the author's lab. No run log is shipped; the figures are in the README as recorded."
+  },
+  {
+   "id": "SE-K11",
+   "claim": "A dedicated inhibitory population passes no seed and tracks direct inhibition within 0.08.",
+   "source": "README.md",
+   "exact": "Direct **0/8**, inhibitory population **0/8**; per-seed ratios within 0.08 of each other (`exp11_out.txt`).",
+   "reproduce": "python exp11_inhib_pop.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-10-20 in the author's lab. The shipped log holds the per-seed figures.",
+   "data": [
+    "exp11_out.txt"
+   ]
+  },
+  {
+   "id": "SE-K12",
+   "claim": "A single global inhibitory node passes no seed and tracks direct inhibition within 0.08.",
+   "source": "README.md",
+   "exact": "Direct **0/8**, global node **0/8**; per-seed ratios within 0.08 of each other (`exp12_out.txt`).",
+   "reproduce": "python exp12_mahowald_wta.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-10-20 in the author's lab. The shipped log holds the per-seed figures.",
+   "data": [
+    "exp12_out.txt"
+   ]
   }
  ]
 }

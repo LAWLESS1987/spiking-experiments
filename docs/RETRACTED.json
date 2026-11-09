@@ -1,7 +1,50 @@
 {
- "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty on 2026-11-07: the history (6 commits) holds no correction, and the README keeps nulls and failures beside the successes rather than withdrawing them.",
+ "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when two were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix) and SE-R2 (a bar for every experiment).",
  "window": 10,
  "coverage_floor": 5,
- "expect_dirs": ["docs", "controls"],
- "retractions": []
+ "expect_dirs": [
+  "docs",
+  "controls"
+ ],
+ "retractions": [
+  {
+   "id": "SE-R1",
+   "date": "2026-11-09",
+   "claim": "That exp5/exp6's three designs failed the same way: a dead third neuron that never gets the early wins it needs, so one pattern stays unclaimed.",
+   "verbatim": [
+    "a \"dead\" third neuron that never gets the early wins it needs, so one pattern stays unclaimed"
+   ],
+   "truth": "One seed (5) on code that kept both STDP Synapses in a list, so Brian2's magic run() dropped noise->out (warned on every run). Built explicitly (exp7), every neuron fires and one neuron per pattern holds on most of seeds 1-8; the failure is the 2x weight-separation bar, unmet on all eight (about 1.5-1.9x).",
+   "refuted_by": "exp7_curriculum.py, 2026-10-20 (lab); published here 2026-11-09.",
+   "patterns": [
+    "never\\s+gets\\s+the\\s+early\\s+wins\\s+it\\s+needs"
+   ],
+   "allow": [
+    "docs/RETRACTED.json"
+   ],
+   "records": [
+    "README.md"
+   ]
+  },
+  {
+   "id": "SE-R2",
+   "date": "2026-11-09",
+   "claim": "That every experiment here had its pass/fail bar declared before it ran.",
+   "verbatim": [
+    "Each one was written with its **pass/fail bar declared before it ran**",
+    "with the pass/fail bar declared before each run"
+   ],
+   "truth": "exp1 and exp2 declare no bar; they are demonstrations. exp3 and exp5-exp12 each declare one.",
+   "refuted_by": "Reading exp1_mnist_snn.py and exp2_brian2_neurons.py, 2026-11-09.",
+   "patterns": [
+    "pass/fail bar declared before\\s+(it\\s+ran|each\\s+run)"
+   ],
+   "allow": [
+    "docs/RETRACTED.json"
+   ],
+   "records": [
+    "README.md"
+   ]
+  }
+ ]
 }

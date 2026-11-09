@@ -1,0 +1,28 @@
+﻿(a) mean |w_end - w_start| per synapse (weights live in [0, 2]; initialised uniform [0, 0.6])
+
+real     burst synapses (inputs 0-59) 0.1438   noise synapses (all inputs) 0.0529
+shuffled burst synapses (inputs 0-59) 0.1592   noise synapses (all inputs) 0.0700
+desync   burst synapses (inputs 0-59) 0.0016   noise synapses (all inputs) 0.0034
+
+(b) label-permutation null for burst selectivity, 1000 random partitions of 0-59 per run
+
+real     seed 1: true 2.56  null median 1.16  null 95th 1.32  fraction of null >= true 0.000
+real     seed 2: true 1.83  null median 1.12  null 95th 1.27  fraction of null >= true 0.000
+real     seed 3: true 2.84  null median 1.16  null 95th 1.34  fraction of null >= true 0.000
+real     seed 4: true 2.34  null median 1.15  null 95th 1.30  fraction of null >= true 0.000
+real     seed 5: true 2.55  null median 1.11  null 95th 1.30  fraction of null >= true 0.000
+real     seed 6: true 2.46  null median 1.16  null 95th 1.32  fraction of null >= true 0.000
+real     seed 7: true 2.74  null median 1.16  null 95th 1.33  fraction of null >= true 0.000
+real     seed 8: true 3.05  null median 1.20  null 95th 1.38  fraction of null >= true 0.000
+real     MEANS true 2.547  null 95th 1.319  seeds with true above null 95th: 8/8
+
+shuffled seed 1: true 1.00  null median 1.00  null 95th 1.15  fraction of null >= true 0.465
+shuffled seed 2: true 1.00  null median 1.07  null 95th 1.15  fraction of null >= true 0.698
+shuffled seed 3: true 1.06  null median 1.06  null 95th 1.15  fraction of null >= true 0.456
+shuffled seed 4: true 1.00  null median 1.08  null 95th 1.17  fraction of null >= true 0.850
+shuffled seed 5: true 1.07  null median 1.06  null 95th 1.16  fraction of null >= true 0.442
+shuffled seed 6: true 1.05  null median 1.08  null 95th 1.17  fraction of null >= true 0.733
+shuffled seed 7: true 1.10  null median 1.06  null 95th 1.15  fraction of null >= true 0.166
+shuffled seed 8: true 1.14  null median 1.09  null 95th 1.21  fraction of null >= true 0.219
+shuffled MEANS true 1.054  null 95th 1.162  seeds with true above null 95th: 0/8
+

@@ -121,6 +121,56 @@
    "data": [
     "exp12_out.txt"
    ]
+  },
+  {
+   "id": "SE-K13",
+   "claim": "A shuffled-burst null reaches ratio 1.64 against 1.84; pre-registered reading mostly by construction.",
+   "source": "README.md",
+   "exact": "Ratio 1.64 against 1.84; pre-registered reading \"mostly by construction\". (`exp14_out.txt`)",
+   "reproduce": "python exp14_shuffled_null.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-11-09 in the author's lab; pre-registration in prereg/. The shipped log holds the per-seed figures.",
+   "data": [
+    "exp14_out.txt"
+   ]
+  },
+  {
+   "id": "SE-K14",
+   "claim": "The coincidence-free null reaches 1.07 with outputs nearly silent; its verdict is set aside after the fact.",
+   "source": "README.md",
+   "exact": "Ratio 1.07; outputs nearly silent (0-9 spikes), so its \"pattern learning\" verdict is set aside. (`exp15_out.txt`)",
+   "reproduce": "python exp15_desync_null.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-11-09 in the author's lab; pre-registration in prereg/. The shipped log holds the per-seed figures.",
+   "data": [
+    "exp15_out.txt"
+   ]
+  },
+  {
+   "id": "SE-K15",
+   "claim": "The score is 1.07 at t = 0 before any learning, and its rise lies in the burst synapses.",
+   "source": "README.md",
+   "exact": "The score is 1.07 before any learning; the rise is in the burst synapses. (`exp16_out.txt`)",
+   "reproduce": "python exp16_rescore.py",
+   "reproduction_status": "custodian-run",
+   "limits": "Eight seeds, one machine, run 2026-11-09 in the author's lab; pre-registration in prereg/. The shipped log holds the per-seed figures.",
+   "data": [
+    "exp16_out.txt",
+    "exp16_weights.npz"
+   ]
+  },
+  {
+   "id": "SE-K16",
+   "claim": "Burst-synapse selectivity passes its pre-registered test on new seeds 9-16.",
+   "source": "README.md",
+   "exact": "**PASS**: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8. (`exp17_out.txt`)",
+   "reproduce": "python exp17_selectivity_new_seeds.py",
+   "reproduction_status": "custodian-run",
+   "limits": "One architecture (direct inhibition), eight new seeds 9-16, one machine, run 2026-11-09; the measure was chosen after seeing seeds 1-8 and pre-registered before this run (prereg/). The shipped log holds the per-seed figures.",
+   "data": [
+    "exp17_out.txt",
+    "exp17_weights.npz"
+   ]
   }
  ]
 }

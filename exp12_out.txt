@@ -1,0 +1,14 @@
+exp12: Mahowald O(N) global WTA vs direct lateral inhibition, seeds [1, 2, 3, 4, 5, 6, 7, 8] (bar+keep rule fixed first; 4 parallel workers, numpy backend)
+
+seed 1: direct fail claim=[0, 1, 2] spk=[118, 162, 165] ratio=1.83  |  wta_global fail claim=[0, 1, 2] spk=[123, 169, 157] ratio=1.84
+seed 2: direct fail claim=[1, 2, 1] spk=[103, 135, 138] ratio=1.56  |  wta_global fail claim=[1, 2, 1] spk=[109, 137, 138] ratio=1.48
+seed 3: direct fail claim=[2, 0, 1] spk=[137, 141, 178] ratio=1.92  |  wta_global fail claim=[2, 0, 1] spk=[136, 140, 179] ratio=1.91
+seed 4: direct fail claim=[0, 2, 1] spk=[133, 152, 157] ratio=1.86  |  wta_global fail claim=[0, 2, 1] spk=[130, 148, 152] ratio=1.8
+seed 5: direct fail claim=[0, 2, 1] spk=[144, 162, 138] ratio=1.9  |  wta_global fail claim=[0, 2, 1] spk=[145, 168, 139] ratio=1.9
+seed 6: direct fail claim=[0, 2, 1] spk=[158, 145, 152] ratio=1.91  |  wta_global fail claim=[0, 2, 1] spk=[163, 144, 153] ratio=1.92
+seed 7: direct fail claim=[0, 2, 1] spk=[144, 150, 154] ratio=1.9  |  wta_global fail claim=[0, 2, 1] spk=[144, 154, 149] ratio=1.86
+seed 8: direct fail claim=[0, 2, 1] spk=[163, 143, 140] ratio=1.83  |  wta_global fail claim=[0, 2, 1] spk=[160, 143, 139] ratio=1.81
+
+direct (control) passed 0/8 ; wta_global (treatment) passed 0/8
+KEEP RULE: Mahowald global WTA kept? NO -- not strictly more seeds than the control (recorded as is)
+saved exp12_mahowald_wta.png

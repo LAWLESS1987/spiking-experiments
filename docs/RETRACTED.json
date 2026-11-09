@@ -53,7 +53,7 @@
    "verbatim": [
     "The one named redesign still unrun is the LTP threshold / lower background rate -- a change to\nthe PLASTICITY rule, which is where the three converging results now point."
    ],
-   "truth": "What sets the ratio (plasticity; multiplicative normalisation cannot change it) still holds. What it measures does not: exp14-17 show the score is 1.07 at t = 0 before any learning, its rise is in the burst synapses, and its denominator (inputs 60-99) holds burst synapses that never fire. Within inputs 0-59 the groups are learned: burst-synapse selectivity passed a pre-registered test on new seeds 9-16 (exp17).",
+   "truth": "The ratio stands as measured, and per-output normalisation leaves it unchanged at each rescaling step (exp8's reasoning). What it measures is confounded: exp14-16 show the score is 1.07 at t = 0 before any learning, its rise is in the burst synapses, and its denominator (inputs 60-99) holds burst synapses that never fire. All three topologies share the score; only the direct-inhibition network was re-tested, where burst-synapse selectivity within inputs 0-59, chosen after exp16, passed a pre-registered test on new seeds 9-16 (exp17).",
    "refuted_by": "exp14-exp17, 2026-11-09 (prereg/ and the exp14-17 logs in this repository).",
    "patterns": [
     "where the three converging\\s+results now point"

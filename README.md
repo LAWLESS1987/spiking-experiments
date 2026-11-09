@@ -201,10 +201,10 @@ the PLASTICITY rule, which is where the three converging results now point. (Har
 the 16 seed-arch tasks across processes for speed; result-identical, numpy backend unchanged, serial versions
 frozen in git at the pre-registration commits, in the lab's history rather than this extract.)
 
-**Read again 2026-11-09 (SE-R3).** The paragraph above is kept as written. What sets the ratio stands; what it
-was taken to mean does not. It treated the shared ~1.9x as a ceiling on learning and said the LTP threshold is
-"where the three converging results now point". exp14-17 below show the ratio mostly separates inputs that burst
-from inputs that don't, and that within the bursting inputs the groups are learned.
+**Read again 2026-11-09 (SE-R3).** The paragraph above is kept as written. Its reading of the shared ~1.9x as a
+ceiling on learning, and the LTP threshold as "where the three converging results now point", are withdrawn.
+exp14-17 below show the ratio mostly separates inputs that burst from inputs that don't; in the direct-inhibition
+network, re-tested on new seeds, the fixed groups show learned selectivity within the bursting inputs.
 
 ### exp14-exp17: the ratio's yardstick (2026-11-09)
 
@@ -231,8 +231,9 @@ code and the code before the run; the lab's commit history is not part of this e
   **PASS: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8.** Seed 13 reached 1.87. Shuffled null
   mean 1.14 against the real run's 2.50.
 
-One architecture, sixteen seeds. What this changes: the 2x bar of exp5-12 was set on a ratio that mostly separates
-inputs that burst from inputs that don't; within the bursting inputs, the fixed groups are learned.
+One architecture (direct inhibition); the measure was suggested by seeds 1-8 and tested on eight new seeds. What
+this changes: the 2x bar of exp5-12 was set on a ratio that mostly separates inputs that burst from inputs that
+don't. exp11 and exp12 use the same score, so the confound applies to their ~1.9x too, but they were not re-tested.
 
 ## Method notes
 
@@ -271,10 +272,13 @@ Each withdrawn sentence is quoted as it stood, with what is true beside it.
   ran**", and the list of repositories below said these were experiments "with the pass/fail bar declared before
   each run". exp1 and exp2 declare no bar; they are demonstrations. Every learning experiment has one. SE-R2.
 - **SE-R3 (2026-11-09).** The exp11-12 synthesis read the three topologies' shared ~1.9x as a ceiling on learning
-  and named the LTP threshold as "where the three converging results now point". What sets the ratio (plasticity;
-  normalisation cannot change it) still holds. What it measures does not: it starts at 1.07 before any learning, its
-  rise is in the burst synapses, and its denominator holds burst synapses that never fire. Within the bursting
-  inputs the groups are learned (exp17, pre-registered on new seeds). See exp14-exp17 above. SE-R3.
+  and named the LTP threshold as "where the three converging results now point". Both are withdrawn. The ratio
+  stands as measured, and per-output normalisation leaves it unchanged at each rescaling step (exp8's reasoning).
+  What it was taken to measure does not: exp14-16 show it starts at 1.07 before any learning, its rise is in the
+  burst synapses, and its denominator holds burst synapses that never fire. The three topologies share this score,
+  so the confound applies to all three, but only the direct-inhibition network was re-tested. There, a selectivity
+  measure within the bursting inputs, chosen after exp16 and then pre-registered, passed on new seeds 9-16 (exp17).
+  See exp14-exp17 above. SE-R3.
 
 
 ---

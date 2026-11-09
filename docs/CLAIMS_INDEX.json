@@ -166,7 +166,7 @@
    "exact": "**PASS**: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8. (`exp17_out.txt`)",
    "reproduce": "python exp17_selectivity_new_seeds.py",
    "reproduction_status": "custodian-run",
-   "limits": "Eight seeds, one machine, run 2026-11-09 in the author's lab; pre-registration in prereg/. The shipped log holds the per-seed figures.",
+   "limits": "One architecture (direct inhibition), eight new seeds 9-16, one machine, run 2026-11-09; the measure was chosen after seeing seeds 1-8 and pre-registered before this run (prereg/). The shipped log holds the per-seed figures.",
    "data": [
     "exp17_out.txt",
     "exp17_weights.npz"

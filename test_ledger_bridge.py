@@ -36,11 +36,30 @@ def check(cond, label):
         FAILURES.append(label)
 
 
-def write_ledger(path, amendments):
+# Intent provenance (intent/beneficiary/divergence) is now required on every
+# scientific amendment. The W1-W7 checks are about OTHER properties, so
+# write_ledger injects a fixed valid triple into any scientific amendment that
+# omits it -- an intent that shares no words with the rationales, so the
+# restatement screen stays out of the way. mechanism_exercise entries are left
+# alone (they carry no provenance). W8 passes inject_prov=False to drive the
+# provenance guard itself, both ways.
+_DEF_PROV = {"intent": "steer the next experiment toward a cleaner measurement",
+             "beneficiary": "future unknown agent", "divergence": "none"}
+
+
+def write_ledger(path, amendments, inject_prov=True):
+    out = []
+    for a in amendments:
+        a = dict(a)
+        if (inject_prov and a.get("kind") != "mechanism_exercise"
+                and "intent" not in a):
+            for k, v in _DEF_PROV.items():
+                a.setdefault(k, v)
+        out.append(a)
     doc = {
         "what": "synthetic ledger for test_ledger_bridge.py",
         "baseline": {"tau_plus_ms": 20.0, "background_rate_hz": 5.0},
-        "amendments": amendments,
+        "amendments": out,
     }
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, indent=1)
@@ -245,6 +264,95 @@ def main():
         check(False, "W7.3 an exercise entry that CITES a standing source is REFUSED (the label cannot launder a citation)")
     except lb.LedgerAbort:
         check(True, "W7.3 an exercise entry that CITES a standing source is REFUSED (the label cannot launder a citation)")
+
+    # --- W8: INTENT PROVENANCE on amendments, driven both ways. ------------------------------------------------
+    good_retr = os.path.join(tmp, "w8_retracted.json")
+    with open(good_retr, "w", encoding="utf-8") as fh:
+        json.dump({"retractions": [{"id": "SE-R3"}]}, fh)
+
+    def _amend(**over):
+        base = {"id": "SE-A1", "date": "2026-11-10", "source": "PREREG_sweep_2027",
+                "param": "background_rate_hz", "value": 2.0,
+                "rationale": "lower the noise floor",
+                "intent": "sharpen selectivity by quieting the background",
+                "beneficiary": "future unknown agent", "divergence": "none"}
+        base.update(over)
+        return base
+
+    # present + well-formed -> applied.
+    w8_ok = write_ledger(os.path.join(tmp, "w8_ok.json"), [_amend()], inject_prov=False)
+    sel = lb.latest_plasticity_amendment(w8_ok, retracted_path=good_retr)
+    check(sel["id"] == "SE-A1", "W8.0 a scientific amendment WITH provenance is selected")
+
+    # each field missing -> abort.
+    for drop in ("intent", "beneficiary", "divergence"):
+        led = write_ledger(os.path.join(tmp, f"w8_no_{drop}.json"),
+                           [_amend(**{drop: "  "})], inject_prov=False)
+        try:
+            lb.latest_plasticity_amendment(led, retracted_path=good_retr)
+            check(False, f"W8.{drop} an amendment missing {drop} ABORTS")
+        except lb.LedgerAbort:
+            check(True, f"W8.{drop} an amendment missing {drop} ABORTS")
+
+    # intent restates the rationale -> abort.
+    led = write_ledger(os.path.join(tmp, "w8_restate.json"),
+                       [_amend(intent="lower the noise floor")], inject_prov=False)
+    try:
+        lb.latest_plasticity_amendment(led, retracted_path=good_retr)
+        check(False, "W8.restate an intent that RESTATES the rationale ABORTS")
+    except lb.LedgerAbort:
+        check(True, "W8.restate an intent that RESTATES the rationale ABORTS")
+
+    # divergence != none: needs a resolvable diverges_from; 'baseline' is valid.
+    led = write_ledger(os.path.join(tmp, "w8_div_ok.json"),
+                       [_amend(divergence="conflicts with the 5 Hz baseline", diverges_from="baseline")],
+                       inject_prov=False)
+    sel = lb.latest_plasticity_amendment(led, retracted_path=good_retr)
+    check(sel.get("diverges_from") == "baseline",
+          "W8.div-ok divergence != none with diverges_from='baseline' is applied and cross-linked")
+
+    led = write_ledger(os.path.join(tmp, "w8_div_nolink.json"),
+                       [_amend(divergence="conflicts with something", diverges_from="")],
+                       inject_prov=False)
+    try:
+        lb.latest_plasticity_amendment(led, retracted_path=good_retr)
+        check(False, "W8.div-nolink divergence != none with NO diverges_from ABORTS")
+    except lb.LedgerAbort:
+        check(True, "W8.div-nolink divergence != none with NO diverges_from ABORTS")
+
+    led = write_ledger(os.path.join(tmp, "w8_div_dangle.json"),
+                       [_amend(divergence="conflicts with ghost", diverges_from="SE-A999")],
+                       inject_prov=False)
+    try:
+        lb.latest_plasticity_amendment(led, retracted_path=good_retr)
+        check(False, "W8.div-dangle diverges_from naming no amendment ABORTS")
+    except lb.LedgerAbort:
+        check(True, "W8.div-dangle diverges_from naming no amendment ABORTS")
+
+    led = write_ledger(os.path.join(tmp, "w8_div_contra.json"),
+                       [_amend(divergence="none", diverges_from="baseline")], inject_prov=False)
+    try:
+        lb.latest_plasticity_amendment(led, retracted_path=good_retr)
+        check(False, "W8.div-contra divergence 'none' WITH a diverges_from ABORTS")
+    except lb.LedgerAbort:
+        check(True, "W8.div-contra divergence 'none' WITH a diverges_from ABORTS")
+
+    # intent_check: verbatim fields + a satisfiability flag.
+    ic = lb.intent_check("SE-A1", w8_ok, good_retr)
+    check(ic["intent"] == "sharpen selectivity by quieting the background"
+          and ic["beneficiary"] == "future unknown agent",
+          "W8.ic0 intent_check returns the fields VERBATIM")
+    check(ic["satisfiable"] is True, "W8.ic1 a well-formed, standing amendment is satisfiable")
+
+    led = write_ledger(os.path.join(tmp, "w8_ic_retr.json"),
+                       [_amend(source="SE-R3")], inject_prov=False)
+    ic2 = lb.intent_check("SE-A1", led, good_retr)
+    check(ic2["satisfiable"] is False and "retracted" in ic2["assessment"],
+          "W8.ic2 an amendment citing a retracted source reads UNSATISFIABLE")
+
+    ic3 = lb.intent_check("NOPE", w8_ok, good_retr)
+    check(ic3["satisfiable"] is False and "no amendment" in ic3["assessment"],
+          "W8.ic3 an unknown id reads UNSATISFIABLE")
 
     print()
     if FAILURES:

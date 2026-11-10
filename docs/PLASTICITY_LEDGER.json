@@ -7,7 +7,11 @@
   "source": "the standing record this amendment derives from: a prereg id, an SE-R retraction id, or an SE-K claim id in this repo. ENFORCED, not just documented: ledger_bridge.py reads docs/RETRACTED.json and REFUSES any scientific amendment whose source is retracted (e.g. SE-R3) or missing, so a retracted citation can never activate a parameter change. For a mechanism_exercise entry this must be the literal 'none'.",
   "param": "exactly one of: 'tau_plus_ms' (the STDP taupre, baseline 20 ms) or 'background_rate_hz' (the PoissonGroup noise rate, baseline 5 Hz)",
   "value": "the prescribed numeric value, in the unit named by param",
-  "rationale": "one line: why this value, tied to the source"
+  "rationale": "one line: why this value, tied to the source",
+  "intent": "REQUIRED (2026-11-10, ported from the covenant AI-memory store). One line: what this amendment is meant to CAUSE, not a restatement of param/value/rationale. ENFORCED: ledger_bridge.py refuses an amendment whose intent is empty or merely restates it.",
+  "beneficiary": "REQUIRED. Who or what the change is for; 'future unknown agent' is valid.",
+  "divergence": "REQUIRED. The prior value or claim this amendment conflicts with, or the literal 'none'. When not 'none' the amendment MUST set diverges_from so the conflict chain is traversable.",
+  "diverges_from": "required when divergence != 'none': the record this amendment diverges from -- the literal 'baseline', or the id of another amendment in this ledger. ENFORCED by ledger_bridge.py. intent_check(id) reports these fields verbatim plus whether the intent is still satisfiable."
  },
  "baseline": {
   "tau_plus_ms": 20.0,

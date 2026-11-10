@@ -41,6 +41,7 @@ import hashlib
 import json
 import logging
 import os
+import re
 import sys
 
 LEDGER_DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "PLASTICITY_LEDGER.json")
@@ -61,7 +62,75 @@ RETRACTED_DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "do
 SCIENTIFIC_KIND = "scientific"
 EXERCISE_KIND = "mechanism_exercise"
 
+# INTENT PROVENANCE (2026-11-10, ported from the covenant AI-memory store's
+# screen_provenance). A scientific amendment must say WHY it was made, not only
+# what it prescribes, so a later amendment's divergence is QUERYABLE instead of
+# inferred:
+#   intent       -- one line: what this amendment is meant to CAUSE (e.g. raise
+#                   selectivity), not a restatement of the param/value/rationale.
+#   beneficiary  -- who or what the change is for; "future unknown agent" valid.
+#   divergence   -- the prior value or claim this amendment conflicts with, or
+#                   the literal "none". When not "none" it must cross-link the
+#                   record it diverges from (diverges_from): "baseline", or the
+#                   id of another amendment in this ledger, so the conflict chain
+#                   is traversable. These are REQUIRED of a scientific amendment;
+#                   one missing a field, or whose intent merely restates it, is
+#                   refused by the gate before it can activate a parameter change.
+PROVENANCE_FIELDS = ("intent", "beneficiary", "divergence")
+DIVERGENCE_NONE = "none"
+BASELINE_SENTINEL = "baseline"
+
 log = logging.getLogger("ledger_bridge")
+
+_WORD = re.compile(r"[a-z0-9]+")
+
+
+def _intent_restates(intent, payload):
+    """True iff `intent` reads as a restatement of `payload` rather than a purpose.
+
+    SURFACE ONLY (and that limit is the point, per rule 9 -- regex is an existence
+    oracle, not a meaning one): it catches the normalized intent appearing inside
+    the payload, and the intent being ~all of the payload's own words. A purpose
+    statement shares few words with the param/value/rationale it is about.
+    """
+    it = _WORD.findall(str(intent).lower())
+    if not it:
+        return False
+    iset, pset = set(it), set(_WORD.findall(str(payload).lower()))
+    ni, npl = " ".join(it), " ".join(_WORD.findall(str(payload).lower()))
+    if ni and ni in npl:
+        return True
+    if len(iset) < 3:
+        return False
+    return len(iset & pset) / len(iset) >= 0.8
+
+
+def amendment_provenance_reason(a, known_ids):
+    """Return a refusal reason, or None if the amendment's intent provenance is
+    well-formed. `known_ids` is the set of amendment ids in the same ledger, for
+    the divergence cross-link check. Pure."""
+    for k in PROVENANCE_FIELDS:
+        v = a.get(k)
+        if not isinstance(v, str) or not v.strip():
+            return ("missing provenance field %r: intent, beneficiary and divergence "
+                    "are required on a scientific amendment" % k)
+    payload = a.get("rationale") or ("%s %s" % (a.get("param"), a.get("value")))
+    if _intent_restates(a["intent"], payload):
+        return ("intent restates the amendment instead of stating its purpose; "
+                "say what the change is meant to CAUSE")
+    dv = str(a["divergence"]).strip().lower()
+    df = str(a.get("diverges_from") or "").strip()
+    if dv == DIVERGENCE_NONE:
+        if df:
+            return "divergence is 'none' but diverges_from names a record; one or the other"
+    else:
+        if not df:
+            return ("divergence is not 'none' but no diverges_from record is cross-linked; "
+                    "name 'baseline' or an amendment id so the conflict chain is traversable")
+        if df != BASELINE_SENTINEL and df not in known_ids:
+            return ("diverges_from %r resolves to no amendment in this ledger "
+                    "(use 'baseline' or an existing amendment id)" % df)
+    return None
 
 
 class LedgerAbort(Exception):
@@ -170,9 +239,67 @@ def latest_plasticity_amendment(ledger_path=LEDGER_DEFAULT, retracted_path=RETRA
                "prescribes a plasticity parameter %r" % (ledger_path, list(PLASTICITY_PARAMS)))
     candidates.sort(key=lambda t: (t[0], t[1]))
     chosen = candidates[-1][2]
-    log.info("amendment %s (%s): %s = %s [source %s]",
-             chosen.get("id"), chosen.get("date"), chosen["param"], chosen["value"], chosen.get("source"))
+    # The selected amendment must carry well-formed intent provenance, or the run
+    # aborts with that reason -- a parameter change never activates without saying
+    # why it was made and what it diverges from. Fail-closed like everything else:
+    # a malformed newest amendment stops the run, it is not skipped for an older one.
+    known_ids = {a.get("id") for a in amendments if isinstance(a, dict) and a.get("id")}
+    reason = amendment_provenance_reason(chosen, known_ids)
+    if reason is not None:
+        _abort("amendment %r has malformed intent provenance: %s" % (chosen.get("id"), reason))
+    log.info("amendment %s (%s): %s = %s [source %s] intent=%r",
+             chosen.get("id"), chosen.get("date"), chosen["param"], chosen["value"],
+             chosen.get("source"), chosen.get("intent"))
     return chosen
+
+
+def intent_check(amendment_id, ledger_path=LEDGER_DEFAULT, retracted_path=RETRACTED_DEFAULT):
+    """Read one amendment's intent provenance VERBATIM, plus a one-line
+    satisfiability flag from the current ledger state. READ-ONLY, no abort:
+    any agent can call it on any id without side effects.
+
+    Returns {id, intent, beneficiary, divergence, diverges_from, source,
+    satisfiable, assessment}. Fields are exactly as stored -- no paraphrase.
+    Satisfiable unless the ledger has structurally foreclosed the intent:
+      * no amendment with that id;
+      * a provenance field is missing (nothing well-formed to satisfy);
+      * the cited source is retracted (docs/RETRACTED.json) -- a retracted
+        citation can never activate the change;
+      * divergence != 'none' but diverges_from resolves to nothing in the ledger
+        ('baseline' excepted) -- the conflict chain is broken.
+    It never asserts the change is GOOD, only that the ledger has not foreclosed it.
+    """
+    none = {"id": amendment_id, "intent": None, "beneficiary": None,
+            "divergence": None, "diverges_from": None, "source": None}
+    try:
+        ledger = read_ledger(ledger_path)
+    except LedgerAbort as exc:
+        return dict(none, satisfiable=False, assessment="UNSATISFIABLE: %s" % exc)
+    amendments = ledger.get("amendments")
+    if not isinstance(amendments, list):
+        return dict(none, satisfiable=False, assessment="UNSATISFIABLE: ledger has no amendments list")
+    match = [a for a in amendments if isinstance(a, dict) and a.get("id") == amendment_id]
+    if not match:
+        return dict(none, satisfiable=False,
+                    assessment="UNSATISFIABLE: no amendment with id %r in the ledger" % amendment_id)
+    a = match[-1]
+    fields = {"id": amendment_id, "intent": a.get("intent"), "beneficiary": a.get("beneficiary"),
+              "divergence": a.get("divergence"), "diverges_from": a.get("diverges_from"),
+              "source": a.get("source")}
+    reasons = []
+    known_ids = {x.get("id") for x in amendments if isinstance(x, dict) and x.get("id")}
+    prov = amendment_provenance_reason(a, known_ids)
+    if prov is not None:
+        reasons.append(prov)
+    try:
+        if a.get("source") in retracted_ids(retracted_path):
+            reasons.append("cited source %r is retracted" % a.get("source"))
+    except LedgerAbort as exc:
+        reasons.append("cannot certify the citation: %s" % exc)
+    satisfiable = not reasons
+    assessment = ("satisfiable: provenance well-formed, source standing"
+                  if satisfiable else "UNSATISFIABLE: " + "; ".join(reasons))
+    return dict(fields, satisfiable=satisfiable, assessment=assessment)
 
 
 def latest_mechanism_exercise(ledger_path=LEDGER_DEFAULT):
@@ -273,11 +400,19 @@ def main(argv=None):
     p = argparse.ArgumentParser(description="Apply the latest plasticity amendment to the next run's config.")
     p.add_argument("--ledger", default=LEDGER_DEFAULT, help="path to the plasticity-amendment ledger")
     p.add_argument("--retracted", default=RETRACTED_DEFAULT, help="path to the retractions file; ids a scientific amendment may not cite")
-    p.add_argument("--config-in", required=True, help="path to the config the last run used, or '-' for stdin JSON")
-    p.add_argument("--config-out", required=True, help="path to write the next run's config")
+    p.add_argument("--config-in", help="path to the config the last run used, or '-' for stdin JSON")
+    p.add_argument("--config-out", help="path to write the next run's config")
     p.add_argument("--exercise", action="store_true",
                    help="dry-run the loop from the mechanism_exercise entry (non-citable), not the scientific amendment")
+    p.add_argument("--intent-check", dest="intent_check", metavar="ID",
+                   help="read one amendment's intent provenance (verbatim) + a satisfiability flag; prints JSON, writes nothing")
     args = p.parse_args(argv)
+    if args.intent_check:                     # read-only: no config in/out needed
+        print(json.dumps(intent_check(args.intent_check, args.ledger, args.retracted),
+                         indent=1, sort_keys=True))
+        return 0
+    if not args.config_in or not args.config_out:
+        p.error("--config-in and --config-out are required unless --intent-check is given")
     try:
         config_in = _read_config_in(args.config_in)
     except (OSError, json.JSONDecodeError) as exc:

@@ -9,6 +9,9 @@ never been observed, so every guard is driven green AND red in the same run. Her
   AMENDMENT PRESENT  -> the next seed's config takes the prescribed value (tau_plus 20 -> 40, i.e. 2x baseline).
   AMENDMENT ABSENT   -> the run ABORTS; the next seed never runs; no default, no baseline fallback.
   ONE-DIRECTIONAL    -> the ledger file's sha256 is unchanged across a full cycle (the net never writes back).
+  RETRACTED CITATION -> an amendment citing a retracted (or missing) source is never selected; the run ABORTS (W6).
+  MECHANISM EXERCISE -> the mechanism_exercise class exercises the loop but is never selected as a finding, and an
+                        exercise entry that tries to cite a standing source is REFUSED (W7).
 
 CI runs this file (.github/workflows/tests.yml). It needs neither Brian2 nor PyTorch: the "experiment" is a stub
 runner that records the config it was handed, which is all the bridge's contract is about.
@@ -141,9 +144,9 @@ def main():
     # --- MOST-RECENT selection: later date wins. --------------------------------------------------------------
     multi = write_ledger(
         os.path.join(tmp, "multi.json"),
-        [{"id": "A1", "date": "2026-10-01", "param": "tau_plus_ms", "value": 25.0},
-         {"id": "A2", "date": "2026-11-09", "param": "background_rate_hz", "value": 2.0},
-         {"id": "A3", "date": "2026-10-15", "param": "tau_plus_ms", "value": 30.0}],
+        [{"id": "A1", "date": "2026-10-01", "source": "test", "param": "tau_plus_ms", "value": 25.0},
+         {"id": "A2", "date": "2026-11-09", "source": "test", "param": "background_rate_hz", "value": 2.0},
+         {"id": "A3", "date": "2026-10-15", "source": "test", "param": "tau_plus_ms", "value": 30.0}],
     )
     latest = lb.latest_plasticity_amendment(multi)
     check(latest["id"] == "A2", "W3.0 the most recent amendment (by date) is chosen")
@@ -167,6 +170,81 @@ def main():
             check(False, "W5.0 the shipped docs/PLASTICITY_LEDGER.json aborts (empty by design)")
         except lb.LedgerAbort:
             check(True, "W5.0 the shipped docs/PLASTICITY_LEDGER.json aborts (empty by design)")
+
+    # --- W6: THE NEGATIVE TEST (the one the consult called most important): a RETRACTED or missing citation can
+    #         never activate a parameter change. Hermetic: a synthetic retractions file lists SE-R3. -------------
+    retracted = os.path.join(tmp, "retracted.json")
+    with open(retracted, "w", encoding="utf-8") as fh:
+        json.dump({"retractions": [{"id": "SE-R3"}, {"id": "SE-R1"}]}, fh)
+
+    good_src = write_ledger(
+        os.path.join(tmp, "good_source.json"),
+        [{"id": "SE-A1", "date": "2026-11-10", "source": "PREREG_sweep_2027",
+          "param": "background_rate_hz", "value": 2.0}],
+    )
+    chosen = lb.latest_plasticity_amendment(good_src, retracted_path=retracted)
+    check(chosen["id"] == "SE-A1", "W6.0 an amendment citing a standing (non-retracted) source IS applied")
+
+    retr_cite = write_ledger(
+        os.path.join(tmp, "retracted_cite.json"),
+        [{"id": "SE-A1", "date": "2026-11-10", "source": "SE-R3",
+          "param": "background_rate_hz", "value": 2.0}],
+    )
+    try:
+        lb.latest_plasticity_amendment(retr_cite, retracted_path=retracted)
+        check(False, "W6.1 an amendment citing a RETRACTED source ABORTS (retracted citation cannot activate a change)")
+    except lb.LedgerAbort:
+        check(True, "W6.1 an amendment citing a RETRACTED source ABORTS (retracted citation cannot activate a change)")
+
+    no_src = write_ledger(
+        os.path.join(tmp, "no_source.json"),
+        [{"id": "SE-A1", "date": "2026-11-10", "param": "background_rate_hz", "value": 2.0}],
+    )
+    try:
+        lb.latest_plasticity_amendment(no_src, retracted_path=retracted)
+        check(False, "W6.2 an amendment with no cited source ABORTS")
+    except lb.LedgerAbort:
+        check(True, "W6.2 an amendment with no cited source ABORTS")
+
+    try:
+        lb.latest_plasticity_amendment(good_src, retracted_path=os.path.join(tmp, "no_retracted_file.json"))
+        check(False, "W6.3 an unreadable retractions file ABORTS the scientific path (cannot certify the citation is live)")
+    except lb.LedgerAbort:
+        check(True, "W6.3 an unreadable retractions file ABORTS the scientific path (cannot certify the citation is live)")
+
+    # --- W7: the mechanism_exercise class -- exercise the loop WITHOUT it ever counting as a plasticity finding. --
+    ex = write_ledger(
+        os.path.join(tmp, "exercise.json"),
+        [{"id": "SE-X1", "date": "2026-11-10", "kind": "mechanism_exercise", "source": "none",
+          "param": "tau_plus_ms", "value": 20.0, "rationale": "no-op baseline; exercise the parse->config path only"}],
+    )
+    try:
+        lb.latest_plasticity_amendment(ex, retracted_path=retracted)
+        check(False, "W7.0 a mechanism_exercise entry is NOT selected by the scientific path (fail-closed holds)")
+    except lb.LedgerAbort:
+        check(True, "W7.0 a mechanism_exercise entry is NOT selected by the scientific path (fail-closed holds)")
+
+    runner_x = RecordingRunner()
+    try:
+        lb.run_trial(runner_x, [1, 2], BASELINE, ledger_path=ex, retracted_path=retracted)
+        check(False, "W7.1 run_trial never applies an exercise entry (an exercise-only ledger aborts the trial)")
+    except lb.LedgerAbort:
+        check(True, "W7.1 run_trial never applies an exercise entry (an exercise-only ledger aborts the trial)")
+
+    ex_cfg = lb.bridge_exercise(dict(BASELINE), ledger_path=ex)
+    check(ex_cfg["tau_plus_ms"] == 20.0, "W7.2 the exercise path DOES resolve the entry (dry-run config), non-citable")
+
+    # THE GUARD, both ways: an exercise entry that CITES a standing source is refused -- the label cannot launder it.
+    ex_bad = write_ledger(
+        os.path.join(tmp, "exercise_cites.json"),
+        [{"id": "SE-X2", "date": "2026-11-10", "kind": "mechanism_exercise", "source": "PREREG_sweep_2027",
+          "param": "tau_plus_ms", "value": 21.0}],
+    )
+    try:
+        lb.latest_mechanism_exercise(ex_bad)
+        check(False, "W7.3 an exercise entry that CITES a standing source is REFUSED (the label cannot launder a citation)")
+    except lb.LedgerAbort:
+        check(True, "W7.3 an exercise entry that CITES a standing source is REFUSED (the label cannot launder a citation)")
 
     print()
     if FAILURES:

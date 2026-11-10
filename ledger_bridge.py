@@ -23,6 +23,14 @@ ledger as it is reachable here, beside docs/RETRACTED.json and docs/CLAIMS_INDEX
 amendment cites the standing record it derives from; a RETRACTED pointer (e.g. SE-R3, which withdrew the claim that
 the ratio pointed to the plasticity rule) is not a standing source and must not be cited as if it prescribes a value.
 
+WHAT IS ENFORCED, NOT JUST DOCUMENTED (2026-11-10, after an eleven-voice consult; see
+ops/CONSULT_PLASTICITY_AMENDMENT in the covenant repo). (a) A scientific amendment must cite a `source` that is
+present AND not listed in docs/RETRACTED.json; one citing a retracted id, or with no source, is never selected, so a
+retracted citation can NEVER activate a parameter change. (b) The loop can be exercised without faking science via a
+separate, visible class: an amendment with `"kind": "mechanism_exercise"` that cites NOTHING (`"source": "none"`).
+latest_plasticity_amendment never selects it and run_trial never applies it, so it cannot leak into the hypothesis;
+if such an entry ever carries a real citation, latest_mechanism_exercise aborts rather than let the label launder it.
+
 WHAT THIS CANNOT DO. It does not decide WHICH value is right -- that is an amendment author's judgement, recorded by
 hand with a cited source. It does not run the experiment; it only hands the next run its config. And it does not read
 the prose ledger's free text for numbers: amendments are structured JSON, so there is no regex guessing a value out
@@ -41,6 +49,17 @@ LEDGER_DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs"
 # tau_plus_ms  == the STDP taupre, 20 ms baseline (exp11_inhib_pop.py:76 and every STDP script).
 # background_rate_hz == the PoissonGroup noise rate, 5 Hz baseline (exp11_inhib_pop.py:51 and the others).
 PLASTICITY_PARAMS = ("tau_plus_ms", "background_rate_hz")
+
+# The retractions file (docs/RETRACTED.json). A standing rule of the ledger is that a RETRACTED pointer is NOT a
+# standing source, so a scientific amendment whose cited source is retracted is refused -- a retracted citation can
+# never activate a parameter change.
+RETRACTED_DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "RETRACTED.json")
+
+# An amendment's kind. Absent means 'scientific'. A mechanism_exercise entry exercises the parse -> config path
+# WITHOUT ever being a plasticity finding: it cites nothing, latest_plasticity_amendment never selects it, and
+# run_trial never applies it. The two are a visible, separate class -- not a loophole in the citation rule.
+SCIENTIFIC_KIND = "scientific"
+EXERCISE_KIND = "mechanism_exercise"
 
 log = logging.getLogger("ledger_bridge")
 
@@ -68,8 +87,12 @@ def read_ledger(ledger_path=LEDGER_DEFAULT):
         _abort("ledger at %r is not valid JSON (%s)" % (ledger_path, exc))
 
 
-def _is_plasticity_amendment(a):
-    """True iff a is a well-formed amendment prescribing one of the plasticity parameters."""
+def _has_plasticity_shape(a):
+    """True iff a has the shape of a plasticity amendment: one prescribed param, a numeric value, a date and an id.
+
+    SHAPE only -- it says nothing about whether the amendment is a legitimate scientific one (which also needs a
+    standing, non-retracted source) or a mechanism-exercise entry (which must cite nothing).
+    """
     if not isinstance(a, dict):
         return False
     if a.get("param") not in PLASTICITY_PARAMS:
@@ -83,22 +106,104 @@ def _is_plasticity_amendment(a):
     return True
 
 
-def latest_plasticity_amendment(ledger_path=LEDGER_DEFAULT):
-    """Return the most recent plasticity amendment in the ledger, or abort if there is none.
+def _kind(a):
+    """The amendment's kind: 'scientific' when absent (the default), otherwise the literal string (which may be an
+    unknown value -- an unknown kind matches neither path and is ignored)."""
+    k = a.get("kind")
+    return SCIENTIFIC_KIND if k is None else k
 
-    'Most recent' = highest ISO date; ties broken by position (later in the list is later). Malformed entries are
-    ignored, not guessed at. If no well-formed plasticity amendment remains, the run aborts -- no default.
+
+def retracted_ids(retracted_path=RETRACTED_DEFAULT):
+    """The set of retracted record ids a scientific amendment may NOT cite (docs/RETRACTED.json). READ-ONLY.
+
+    Enforcing 'a RETRACTED pointer is not a standing source' needs the list of what is retracted. If that list
+    cannot be read or parsed, the scientific path must NOT proceed -- we cannot certify a citation is live -- so this
+    aborts rather than returning an empty set that would silently wave every citation through.
+    """
+    try:
+        with open(retracted_path, "r", encoding="utf-8") as fh:
+            raw = fh.read()
+    except OSError as exc:
+        _abort("retractions file could not be read at %r (%s)" % (retracted_path, exc))
+    try:
+        doc = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        _abort("retractions file at %r is not valid JSON (%s)" % (retracted_path, exc))
+    entries = doc.get("retractions")
+    if not isinstance(entries, list):
+        _abort("retractions file at %r has no 'retractions' list" % (retracted_path,))
+    return {e["id"] for e in entries if isinstance(e, dict) and e.get("id")}
+
+
+def _is_scientific_amendment(a, retracted):
+    """True iff a is a legitimate SCIENTIFIC plasticity amendment: right shape, scientific kind, and a cited source
+    that is present and NOT retracted. A retracted or missing source disqualifies it, so it is never selected and a
+    retracted citation can never activate a parameter change."""
+    if not _has_plasticity_shape(a):
+        return False
+    if _kind(a) != SCIENTIFIC_KIND:
+        return False
+    src = a.get("source")
+    if not isinstance(src, str) or not src.strip():
+        return False
+    if src in retracted:
+        return False
+    return True
+
+
+def latest_plasticity_amendment(ledger_path=LEDGER_DEFAULT, retracted_path=RETRACTED_DEFAULT):
+    """Return the most recent legitimate SCIENTIFIC plasticity amendment, or abort if there is none.
+
+    Legitimate = right shape, scientific kind, and a present, non-retracted cited source. mechanism_exercise entries
+    are never selected here (see latest_mechanism_exercise). 'Most recent' = highest ISO date; ties broken by
+    position. If none qualifies -- empty ledger, only exercise entries, or every candidate citing a retracted or
+    missing source -- the run aborts: no default, no baseline.
     """
     ledger = read_ledger(ledger_path)
     amendments = ledger.get("amendments")
     if not isinstance(amendments, list):
         _abort("ledger at %r has no 'amendments' list" % (ledger_path,))
-    candidates = [(a["date"], i, a) for i, a in enumerate(amendments) if _is_plasticity_amendment(a)]
+    bad = retracted_ids(retracted_path)
+    candidates = [(a["date"], i, a) for i, a in enumerate(amendments) if _is_scientific_amendment(a, bad)]
     if not candidates:
-        _abort("ledger at %r holds no amendment prescribing a plasticity parameter %r" % (ledger_path, list(PLASTICITY_PARAMS)))
+        _abort("ledger at %r holds no scientific amendment citing a standing (non-retracted) source that "
+               "prescribes a plasticity parameter %r" % (ledger_path, list(PLASTICITY_PARAMS)))
     candidates.sort(key=lambda t: (t[0], t[1]))
     chosen = candidates[-1][2]
-    log.info("amendment %s (%s): %s = %s", chosen.get("id"), chosen.get("date"), chosen["param"], chosen["value"])
+    log.info("amendment %s (%s): %s = %s [source %s]",
+             chosen.get("id"), chosen.get("date"), chosen["param"], chosen["value"], chosen.get("source"))
+    return chosen
+
+
+def latest_mechanism_exercise(ledger_path=LEDGER_DEFAULT):
+    """Return the most recent mechanism_exercise entry for the NON-SCIENTIFIC dry-run path, or abort if none.
+
+    A mechanism_exercise entry exercises the parse -> config path WITHOUT being a plasticity finding; it is never
+    selected by latest_plasticity_amendment, and run_trial never applies it. To stay a non-claim it must cite
+    NOTHING: source absent, or the literal 'none'. If an exercise entry carries any other source, that is the
+    loophole this refuses -- the label would launder a citation into a finding -- so it aborts. (Driven both ways by
+    test_ledger_bridge.py: without this abort the label could not fail.)
+    """
+    ledger = read_ledger(ledger_path)
+    amendments = ledger.get("amendments")
+    if not isinstance(amendments, list):
+        _abort("ledger at %r has no 'amendments' list" % (ledger_path,))
+    best, chosen = None, None
+    for i, a in enumerate(amendments):
+        if not _has_plasticity_shape(a) or _kind(a) != EXERCISE_KIND:
+            continue
+        src = a.get("source")
+        cites_nothing = src is None or (isinstance(src, str) and src.strip().lower() in ("", "none"))
+        if not cites_nothing:
+            _abort("mechanism_exercise amendment %r carries source %r; an exercise entry must cite nothing "
+                   "(source: \"none\"). Refusing to let the label launder a citation into a finding." % (a.get("id"), src))
+        key = (a["date"], i)
+        if best is None or key > best:
+            best, chosen = key, a
+    if chosen is None:
+        _abort("ledger at %r holds no mechanism_exercise amendment" % (ledger_path,))
+    log.info("MECHANISM TEST (non-citable) %s (%s): %s = %s",
+             chosen.get("id"), chosen.get("date"), chosen["param"], chosen["value"])
     return chosen
 
 
@@ -114,17 +219,27 @@ def amend_config(config, amendment):
     return out
 
 
-def bridge_after_run(config_in, ledger_path=LEDGER_DEFAULT):
+def bridge_after_run(config_in, ledger_path=LEDGER_DEFAULT, retracted_path=RETRACTED_DEFAULT):
     """The one thing: given the config a run just used, return the config the NEXT run must start from.
 
-    Reads the latest plasticity amendment (aborting if none) and applies it. Called AFTER a run completes and BEFORE
-    the next run starts. Raises LedgerAbort rather than ever returning a default.
+    Reads the latest legitimate scientific amendment (aborting if none) and applies it. Called AFTER a run completes
+    and BEFORE the next run starts. Raises LedgerAbort rather than ever returning a default.
     """
-    amendment = latest_plasticity_amendment(ledger_path)
+    amendment = latest_plasticity_amendment(ledger_path, retracted_path)
     return amend_config(config_in, amendment)
 
 
-def run_trial(runner, seeds, config_in, ledger_path=LEDGER_DEFAULT):
+def bridge_exercise(config_in, ledger_path=LEDGER_DEFAULT):
+    """Dry-run the loop from a mechanism_exercise entry: resolve and emit the next config WITHOUT it ever counting as
+    a scientific amendment. For proving the parse -> config path works end to end, NEVER for a plasticity claim. The
+    scientific trial path (run_trial / bridge_after_run) cannot reach an exercise entry, so an exercise run can never
+    leak into the hypothesis.
+    """
+    entry = latest_mechanism_exercise(ledger_path)
+    return amend_config(config_in, entry)
+
+
+def run_trial(runner, seeds, config_in, ledger_path=LEDGER_DEFAULT, retracted_path=RETRACTED_DEFAULT):
     """Drive a multi-seed trial through the bridge, one directional hop per seed boundary.
 
     runner(seed, config) runs one experiment seed and returns whatever it likes (ignored here). After each seed
@@ -142,7 +257,7 @@ def run_trial(runner, seeds, config_in, ledger_path=LEDGER_DEFAULT):
         runner(s, config)
         used.append((s, config))
         if n < len(seeds) - 1:               # produce the NEXT seed's config from the ledger (hard dependency)
-            config = bridge_after_run(config, ledger_path)
+            config = bridge_after_run(config, ledger_path, retracted_path)
     return used
 
 
@@ -157,8 +272,11 @@ def main(argv=None):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     p = argparse.ArgumentParser(description="Apply the latest plasticity amendment to the next run's config.")
     p.add_argument("--ledger", default=LEDGER_DEFAULT, help="path to the plasticity-amendment ledger")
+    p.add_argument("--retracted", default=RETRACTED_DEFAULT, help="path to the retractions file; ids a scientific amendment may not cite")
     p.add_argument("--config-in", required=True, help="path to the config the last run used, or '-' for stdin JSON")
     p.add_argument("--config-out", required=True, help="path to write the next run's config")
+    p.add_argument("--exercise", action="store_true",
+                   help="dry-run the loop from the mechanism_exercise entry (non-citable), not the scientific amendment")
     args = p.parse_args(argv)
     try:
         config_in = _read_config_in(args.config_in)
@@ -166,7 +284,10 @@ def main(argv=None):
         log.error("ABORT: could not read --config-in %r (%s)", args.config_in, exc)
         return 2
     try:
-        next_config = bridge_after_run(config_in, args.ledger)
+        if args.exercise:
+            next_config = bridge_exercise(config_in, args.ledger)
+        else:
+            next_config = bridge_after_run(config_in, args.ledger, args.retracted)
     except LedgerAbort:
         return 2                              # reason already logged by _abort
     with open(args.config_out, "w", encoding="utf-8") as fh:

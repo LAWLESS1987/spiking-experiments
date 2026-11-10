@@ -17,3 +17,5 @@ jobs:
         run: python -m py_compile *.py controls/*.py
       - name: auditability checks (self-test, retractions, claims index, manifest)
         run: python -I research_grade.py
+      - name: ledger -> plasticity bridge, driven both ways (stdlib only; no Brian2/PyTorch)
+        run: python -I test_ledger_bridge.py

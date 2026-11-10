@@ -1,0 +1,17 @@
+{
+ "what": "The plasticity-amendment ledger read by ledger_bridge.py. Each amendment prescribes ONE plasticity parameter value for the NEXT experiment run. This is the machine-readable half of the covenant ledger as it is reachable from this repository (the prose half is docs/RETRACTED.json and prereg/*.md); it lives in docs/ beside RETRACTED.json and CLAIMS_INDEX.json. The bridge is strictly one-directional (ledger -> net config); nothing writes an amendment here automatically -- amendments are added by hand, with a cited source, so the loop's effect can be audited.",
+ "schema": {
+  "id": "short unique id, e.g. SE-A1 (A for amendment)",
+  "date": "YYYY-MM-DD",
+  "source": "the record this amendment derives from: a prereg id, an SE-R retraction id, or an SE-K claim id in this repo. The reasoning must actually stand in that source -- a retracted pointer (e.g. SE-R3) may NOT be cited as if it prescribes a value.",
+  "param": "exactly one of: 'tau_plus_ms' (the STDP taupre, baseline 20 ms) or 'background_rate_hz' (the PoissonGroup noise rate, baseline 5 Hz)",
+  "value": "the prescribed numeric value, in the unit named by param",
+  "rationale": "one line: why this value, tied to the source"
+ },
+ "baseline": {
+  "tau_plus_ms": 20.0,
+  "background_rate_hz": 5.0
+ },
+ "amendments": [],
+ "note": "amendments is EMPTY by design as of 2026-11-09. No plasticity amendment has been registered: SE-R3 (docs/RETRACTED.json) WITHDREW the claim that the ~1.9x ratio pointed to a change in the plasticity rule, so there is no standing source that prescribes a tau_plus or background-rate value. While this list is empty, ledger_bridge.py ABORTS every run rather than falling back to the baseline -- fail-closed, by requirement. The baseline block above is a reference for amendment authors and for the config the FIRST run starts from; the bridge never treats it as an amendment."
+}

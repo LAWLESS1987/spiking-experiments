@@ -19,3 +19,5 @@ jobs:
         run: python -I research_grade.py
       - name: ledger -> plasticity bridge, driven both ways (stdlib only; no Brian2/PyTorch)
         run: python -I test_ledger_bridge.py
+      - name: requirements files name an index for their +cpu pins (text check only; pip is not run)
+        run: python -I test_requirements_index.py

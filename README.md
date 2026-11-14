@@ -28,6 +28,11 @@ python -m venv .venv
 # or: .venv/bin/python -m pip install -r requirements.txt      # Linux/macOS
 ```
 
+That command needs no extra flag: `requirements.txt` itself carries
+`--extra-index-url https://download.pytorch.org/whl/cpu`, because the `+cpu` builds of PyTorch and torchvision it
+pins are not on PyPI. (Until 2026-11-14 the file had the pins and no index line, and a clean install could not
+resolve them.) `test_requirements_index.py` fails in CI if a `+cpu` pin is ever left without that line.
+
 Run any experiment with that interpreter, e.g. `.venv/Scripts/python.exe exp1_mnist_snn.py`.
 
 ## Experiments

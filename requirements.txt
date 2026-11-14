@@ -1,3 +1,5 @@
+# torch and torchvision are pinned to their +cpu builds, which PyPI does not host; this line names the index that does.
+--extra-index-url https://download.pytorch.org/whl/cpu
 Brian2==2.10.1
 contourpy==1.4.0
 cycler==0.12.1

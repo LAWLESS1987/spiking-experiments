@@ -96,7 +96,10 @@ BASELINE_SENTINEL = "baseline"
 
 log = logging.getLogger("ledger_bridge")
 
-_WORD = re.compile(r"[a-z0-9]+")
+# \w+ not [a-z0-9]+ (2026-11-18): a CJK intent had NO tokens under the ASCII class, so an intent identical to its
+# rationale was never caught and a wordless value counted as a word. Unicode words, as flinch 37d71be and
+# covenant's memory_store.py now have it. Used by the provenance screen only.
+_WORD = re.compile(r"\w+")
 
 
 def _intent_restates(intent, payload):
@@ -111,12 +114,32 @@ def _intent_restates(intent, payload):
     if not it:
         return False
     iset, pset = set(it), set(_WORD.findall(str(payload).lower()))
-    ni, npl = " ".join(it), " ".join(_WORD.findall(str(payload).lower()))
-    if ni and ni in npl:
+    # On TOKEN BOUNDARIES (2026-11-18; covenant ops/CONSULT_INTENT_PROVENANCE_FLINCH_2026-11-18.md, each input
+    # reproduced here by probe first): the bare `ni in npl` matched INSIDE words, so an honest "cause review"
+    # was refused against "because reviewed", "stop drift" against "nonstop drifting", and a one-letter intent
+    # against almost anything -- and the run ABORTED on an honest amendment. The padding spaces make it whole-word.
+    ni, npl = " " + " ".join(it) + " ", " " + " ".join(_WORD.findall(str(payload).lower())) + " "
+    if ni in npl:
         return True
     if len(iset) < 3:
         return False
     return len(iset & pset) / len(iset) >= 0.8
+
+
+def _one_line_words(v):
+    """Why a provenance value is malformed, or None (2026-11-18, same consult, each shape reproduced by probe
+    first). It must be a str (the loop already required that; an int read as "missing", now it says what it
+    is). It must be ONE line where EVERY line separator counts -- there was NO line test here at all, so a
+    newline, U+2028, U+2029, U+0085, U+000B or U+000C in an intent SELECTED the amendment; str.splitlines()
+    knows all of them. And it must hold at least one word under the Unicode tokenizer: "...", "???" and a
+    zero-width space carried no intent and passed an emptiness test that only stripped whitespace."""
+    if not isinstance(v, str):
+        return "must be a string, not %s" % type(v).__name__
+    if "\x00" in v or len(v.splitlines()) > 1:
+        return "must be a single line (no line separators or NULs)"
+    if not _WORD.findall(v.lower()):
+        return "must contain at least one word"
+    return None
 
 
 def amendment_provenance_reason(a, known_ids):
@@ -125,9 +148,15 @@ def amendment_provenance_reason(a, known_ids):
     the divergence cross-link check. Pure."""
     for k in PROVENANCE_FIELDS:
         v = a.get(k)
-        if not isinstance(v, str) or not v.strip():
+        if v is None or (isinstance(v, str) and not v.strip()):
             return ("missing provenance field %r: intent, beneficiary and divergence "
                     "are required on a scientific amendment" % k)
+        why = _one_line_words(v)
+        if why:
+            return "provenance field %r %s" % (k, why)
+    df_raw = a.get("diverges_from")
+    if df_raw is not None and not isinstance(df_raw, str):
+        return "diverges_from must be a string record id, not %s" % type(df_raw).__name__
     payload = a.get("rationale") or ("%s %s" % (a.get("param"), a.get("value")))
     if _intent_restates(a["intent"], payload):
         return ("intent restates the amendment instead of stating its purpose; "

@@ -12,6 +12,9 @@ never been observed, so every guard is driven green AND red in the same run. Her
   RETRACTED CITATION -> an amendment citing a retracted (or missing) source is never selected; the run ABORTS (W6).
   MECHANISM EXERCISE -> the mechanism_exercise class exercises the loop but is never selected as a finding, and an
                         exercise entry that tries to cite a standing source is REFUSED (W7).
+  PROVENANCE HOLES   -> the three holes the 2026-11-18 consult reproduced in the SHARED rule (W8.h1-h3): the
+                        restatement span test matches whole words; every field is a str with a Unicode word;
+                        every line separator ends the single line. Each refusal asserted by ITS OWN reason.
   VALUE, DATE, SOURCE -> a NaN or infinite value, a date that is not a calendar date, a retracted id disguised by
                         case or a trailing space, and a source that resolves to no standing record are all REFUSED;
                         'most recent' is decided by the parsed date, not the date string's text order (W9).
@@ -353,6 +356,72 @@ def main():
         check(False, "W8.div-contra divergence 'none' WITH a diverges_from ABORTS")
     except lb.LedgerAbort:
         check(True, "W8.div-contra divergence 'none' WITH a diverges_from ABORTS")
+
+    # --- W8.h: the three consult holes (2026-11-18), both ways, each refusal by its own reason. -----------------
+    # covenant ops/CONSULT_INTENT_PROVENANCE_FLINCH_2026-11-18.md; flinch 37d71be; covenant memory_store.py the same day.
+    def _outcome(led):
+        """("selected", amendment) | ("abort", reason text) | ("error", "ExcType: text") -- a crash of the bridge under a
+        broken guard is the FAIL of its own check, never the suite dying mid-run."""
+        try:
+            return "selected", lb.latest_plasticity_amendment(led, retracted_path=good_retr, **REG)
+        except lb.LedgerAbort as exc:
+            return "abort", str(exc)
+        except Exception as exc:                                                  # noqa: BLE001
+            return "error", "%s: %s" % (type(exc).__name__, exc)
+
+    # Hole 1: the span test matched INSIDE words -- the run ABORTED on an honest intent. Honest intents select now ...
+    for i, (it, rat) in enumerate([("cause review", "because reviewed"), ("stop drift", "nonstop drifting"),
+                                   ("a", "banana bandana")]):
+        led = write_ledger(os.path.join(tmp, "w8_h1_%d.json" % i), [_amend(intent=it, rationale=rat)],
+                           inject_prov=False)
+        kind, got = _outcome(led)
+        check(kind == "selected" and got["id"] == "SE-A1",
+              "W8.h1.%d honest intent %r is SELECTED against rationale %r (whole words)" % (i, it, rat))
+    # ... and a whole-word span of the rationale is still a restatement (documented limit).
+    led = write_ledger(os.path.join(tmp, "w8_h1_span.json"),
+                       [_amend(intent="noise floor", rationale="lower the noise floor")], inject_prov=False)
+    kind, got = _outcome(led)
+    check(kind == "abort" and "intent restates the amendment" in got,
+          "W8.h1.span a whole-word span of the rationale is STILL refused as a restatement")
+
+    # Hole 2: a value only had to be truthy after str(); CJK was invisible to [a-z0-9]. (A non-str already aborted
+    # here, read as 'missing'; it now says what it is.)
+    for label, over, want in [
+            ("beneficiary=7", dict(beneficiary=7), "provenance field 'beneficiary' must be a string, not int"),
+            ("intent=True", dict(intent=True), "provenance field 'intent' must be a string, not bool"),
+            ("intent=['x']", dict(intent=["x"]), "provenance field 'intent' must be a string, not list"),
+            ("divergence=0", dict(divergence=0), "provenance field 'divergence' must be a string, not int"),
+            ("intent='...'", dict(intent="..."), "provenance field 'intent' must contain at least one word"),
+            ("intent='???'", dict(intent="???"), "provenance field 'intent' must contain at least one word"),
+            ("intent=U+200B", dict(intent="\u200b"), "provenance field 'intent' must contain at least one word"),
+            ("beneficiary='--'", dict(beneficiary="--"), "provenance field 'beneficiary' must contain at least one word"),
+            ("diverges_from=['baseline']", dict(divergence="conflicts with the baseline", diverges_from=["baseline"]),
+             "diverges_from must be a string record id, not list")]:
+        led = write_ledger(os.path.join(tmp, "w8_h2_%s.json" % abs(hash(label))), [_amend(**over)], inject_prov=False)
+        kind, got = _outcome(led)
+        check(kind == "abort" and want in got, "W8.h2 %s ABORTS by its own reason" % label)
+    cjk = "\u5c06\u6765\u306e\u8aad\u8005"                                        # five CJK characters, no ASCII word
+    led = write_ledger(os.path.join(tmp, "w8_h2_cjk.json"), [_amend(intent=cjk, rationale=cjk)], inject_prov=False)
+    kind, got = _outcome(led)
+    check(kind == "abort" and "intent restates the amendment" in got,
+          "W8.h2.cjk a CJK intent identical to its CJK rationale ABORTS as a RESTATEMENT (Unicode tokenizer)")
+    led = write_ledger(os.path.join(tmp, "w8_h2_cjk_ok.json"), [_amend(rationale=cjk)], inject_prov=False)
+    kind, got = _outcome(led)
+    check(kind == "selected", "W8.h2.cjk-ok a purpose intent on the same CJK rationale is SELECTED")
+
+    # Hole 3: there was NO line test at all here (covenant's and flinch's looked for CR/LF only).
+    for nm, ch in [("U+2028", "\u2028"), ("U+2029", "\u2029"), ("U+0085", "\x85"), ("U+000B", "\x0b"),
+                   ("U+000C", "\x0c"), ("U+000D", "\r"), ("U+000A", "\n"), ("NUL", "\x00")]:
+        led = write_ledger(os.path.join(tmp, "w8_h3_%s.json" % nm.replace("+", "")),
+                           [_amend(intent="sharpen selectivity by" + ch + "quieting the background")], inject_prov=False)
+        kind, got = _outcome(led)
+        check(kind == "abort" and "provenance field 'intent' must be a single line (no line separators or NULs)" in got,
+              "W8.h3 an intent holding %s ABORTS as not a single line" % nm)
+    led = write_ledger(os.path.join(tmp, "w8_h3_ok.json"),
+                       [_amend(intent="sharpen selectivity by quieting the background \u2014 and say so")],
+                       inject_prov=False)
+    kind, got = _outcome(led)
+    check(kind == "selected", "W8.h3.ok a one-line intent with non-ASCII punctuation (U+2014) is SELECTED")
 
     # intent_check: verbatim fields + a satisfiability flag.
     ic = lb.intent_check("SE-A1", w8_ok, good_retr, **REG)

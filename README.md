@@ -259,10 +259,18 @@ exp16's on 8 of 8 seeds.
   synapses and 95.5% on the claimer's own burst synapses. No collapse: outputs fired 109-180 spikes (control
   103-178).
 - **The ratio did not move:** mean 1.839 in both arms. The noise synapses lost weight (-19.0% on the claimed
-  inputs). Per-output normalisation then gave that weight to every other synapse, including the silent burst
-  synapses in the denominator (+18.4%), so the top and bottom of the ratio rose together.
-- **Selectivity fell** on 8 of 8 seeds, with a mean of 2.547 against 2.322 (>= 2.0 on 7/8 in both). The other
-  groups' burst synapses rose 15.8% and the claimed group's 6.9%.
+  inputs), and per-output normalisation raised everything else. The silent burst synapses, which only
+  normalisation moves, rose 18.4%: that is the budget's own scale. The claimed group's burst synapses rose only
+  6.9%. Had they kept pace with the budget, the mean ratio would have been 1.997 (post hoc, `exp18_posthoc_out.txt`).
+  So the ratio held because the claimed synapses lagged, not by the arithmetic of the score.
+- **Selectivity fell** on 8 of 8 seeds, with a mean of 2.547 against 2.322 (>= 2.0 on 7/8 in both). The same lag
+  explains it: the other groups' burst synapses rose 15.8%, close to the budget, and the claimed group's 6.9%.
+- Post hoc, after an outside read: no claimed burst synapse came near wmax = 2.0 (largest 1.38), so saturation did
+  not hold them back. Two readings remain:
+  - the volley-timing equilibrium (`docs/SYNTHESIS_exp14-17_2026-11-20.md`, claim 3);
+  - the gate itself, which also blocked 4.5% of the claimed synapses' own potentiation events.
+
+  exp18 cannot tell them apart. An earlier wording of this paragraph is corrected under SE-R4 below.
 - Per-seed tables, histograms and gate counts are in `exp18_out.txt`; the figures above are in
   `exp18_summary_out.txt`; the reading is in `docs/SYNTHESIS_exp11-18_2026-11-20.md`.
 
@@ -311,6 +319,22 @@ Each withdrawn sentence is quoted as it stood, with what is true beside it.
   so the confound applies to all three, but only the direct-inhibition network was re-tested. There, a selectivity
   measure within the bursting inputs, chosen after exp16 and then pre-registered, passed on new seeds 9-16 (exp17).
   See exp14-exp17 above. SE-R3.
+- **SE-R4 (2026-11-20).** Five sentences about exp18, written and pushed the same day on the branch that ran it, are
+  withdrawn after an outside read (Gemini) and a post hoc check (`exp18_posthoc_out.txt`):
+  - the README said normalisation raised the silent synapses "so the top and bottom of the ratio rose together";
+  - `docs/SYNTHESIS_exp11-18_2026-11-20.md` said "So any change that only moves the noise synapses leaves the
+    ratio where it was";
+  - the same synthesis said the docstring's diagnosis "that spurious noise LTP holds the ratio near 1.9x,
+    does not survive";
+  - and it read the lag "as if the claimed synapses were pinned by their own timing rather than
+    by the budget";
+  - exp19's pre-registration, which may not change, said exp18 "ruled out the noise synapses as what holds the
+    published ratio"; its Amendment 1 corrects that.
+
+  What is true: had the claimed synapses followed the budget like the silent ones, the mean ratio would have been
+  1.997, not 1.840. The ratio held because they lagged. The gate also blocked 4.5% of their own potentiation, so
+  exp18 cannot say whether chance-coincidence potentiation holds the ratio, nor which of two readings explains the
+  lag. SE-R4.
 
 
 ---

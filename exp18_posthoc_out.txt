@@ -1,0 +1,14 @@
+1. saturation of the claimed group's burst synapses (wmax = 2.0)
+   control  : 480 synapses, mean 0.684, max 1.265, share >= 1.8: 0.0000, share >= 1.0: 0.065
+   threshold: 480 synapses, mean 0.731, max 1.377, share >= 1.8: 0.0000, share >= 1.0: 0.152
+
+2. the ratio if the claimed burst synapses had followed the budget (seed by seed)
+   seed 1: observed 1.841  claimed synapses scaled with the budget 2.000
+   seed 2: observed 1.445  claimed synapses scaled with the budget 1.607
+   seed 3: observed 1.944  claimed synapses scaled with the budget 2.097
+   seed 4: observed 1.844  claimed synapses scaled with the budget 1.995
+   seed 5: observed 1.904  claimed synapses scaled with the budget 2.088
+   seed 6: observed 1.920  claimed synapses scaled with the budget 2.080
+   seed 7: observed 1.952  claimed synapses scaled with the budget 2.089
+   seed 8: observed 1.866  claimed synapses scaled with the budget 2.016
+   MEAN observed 1.840  if the claimed synapses had followed the budget 1.997

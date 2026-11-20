@@ -61,3 +61,29 @@ the input timing, not the plasticity rule.
 One network and one jitter value. SUPPORTED would say that the volley's timing can lift the equilibrium past the
 bar, not that it is the only thing holding it. Behaviour is not measured here (open point 2 of the 2026-11-20
 synthesis).
+
+---
+
+## Amendment 1 (2026-11-20, BEFORE any exp19 code or run; the text above is unchanged)
+
+Made after an outside read of the pull request (Gemini, signed out) and the post hoc check it led to
+(`exp18_posthoc_out.txt`).
+
+- **The Why is corrected (SE-R4).** It said exp18 "ruled out the noise synapses as what holds the published ratio".
+  It did not. Had the claimed synapses kept pace with the budget, the ratio would have averaged 1.997; and the gate
+  also trimmed 4.5% of their own potentiation. exp19's question is unchanged: what holds the claimed burst synapses
+  near 3x the background.
+- **The mediator is narrowed to the volley.** Counter (3) counts depression events at a presynaptic spike within
+  10 ms after a post spike, not 100 ms. At 2 ms jitter a volley spans about 8 ms, so this counts the volley's own
+  late spikes and not post spikes driven by something else up to 100 ms earlier. The 100 ms count is still reported,
+  with no bar.
+- **Timing against drive.** A tighter volley also raises the peak drive. Per seed and arm, these are added to what
+  is reported:
+  - the share of each group's bursts on which its claimer fires within 20 ms of the volley's onset;
+  - the same share for the other groups' bursts;
+  - the claimer's first-spike latency from the onset.
+
+  If the claimers' share on their own bursts rises by more than 20% over the control's, a SUPPORTED reading is
+  recorded as "timing and drive together, not separated".
+- **Saturation.** For both arms, the share of claimed burst synapses at or above 1.8 (0.9 * wmax) is reported. If
+  it exceeds 10% in the treatment, any reading notes that the ceiling, not timing, may be what moved.

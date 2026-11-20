@@ -1,5 +1,5 @@
 {
- "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when three were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix), SE-R2 (a bar for every experiment) and SE-R3 (what sets the ~1.9x ratio).",
+ "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when three were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix), SE-R2 (a bar for every experiment) and SE-R3 (what sets the ~1.9x ratio). SE-R4 recorded 2026-11-20 (five sentences about exp18).",
  "window": 10,
  "coverage_floor": 5,
  "expect_dirs": [
@@ -63,6 +63,35 @@
    ],
    "records": [
     "README.md"
+   ]
+  },
+  {
+   "id": "SE-R4",
+   "date": "2026-11-20",
+   "claim": "That in exp18 the ratio held by the arithmetic of normalisation, that shrinking the noise synapses cannot move it, that chance-coincidence potentiation is ruled out as what holds it, and that the claimed synapses' lag reads as pinning by their own timing.",
+   "verbatim": [
+    "so the top and bottom of the ratio rose together",
+    "So any change that only moves the noise synapses leaves the ratio where it was.",
+    "The diagnosis in exp11's own docstring, that spurious noise LTP holds the ratio near 1.9x,\n   does not survive.",
+    "as if the claimed synapses were pinned by their own timing rather\n   than by the budget.",
+    "exp18 ruled out the noise synapses as what holds the published ratio"
+   ],
+   "truth": "Had the claimed burst synapses followed the budget like the silent ones (which only normalisation moves, +18.4%), the mean ratio would have been 1.997, not 1.840 (exp18_posthoc_out.txt); they rose 6.9%. The top and bottom of the ratio stayed where they were. The gate also blocked 4.5% of the claimed synapses' own potentiation, so exp18 cannot say whether chance-coincidence potentiation holds the ratio, nor separate the volley-timing reading of the lag from the gate's own trimming. Saturation is excluded (largest claimed weight 1.38 of 2.0).",
+   "refuted_by": "An outside read of spiking-experiments#12 (Gemini, signed out, 2026-11-20) and the post hoc check it led to, exp18_posthoc.py, the same day.",
+   "patterns": [
+    "top and bottom of the ratio rose together",
+    "leaves the\\s+ratio where it was",
+    "spurious noise LTP holds the ratio near 1\\.9x,\\s+does not survive",
+    "pinned by their own timing rather\\s+than\\s+by the budget",
+    "ruled out the noise synapses as what holds\\s+the\\s+published ratio"
+   ],
+   "allow": [
+    "docs/RETRACTED.json",
+    "prereg/PREREG_exp19_volley_jitter.md"
+   ],
+   "records": [
+    "README.md",
+    "docs/SYNTHESIS_exp11-18_2026-11-20.md"
    ]
   }
  ]

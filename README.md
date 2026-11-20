@@ -55,6 +55,7 @@ Run any experiment with that interpreter, e.g. `.venv/Scripts/python.exe exp1_mn
 | `exp16_rescore.py` | Reruns all three conditions saving weights at t = 0 and at the end (measurement only). | The score is 1.07 before any learning; the rise is in the burst synapses. (`exp16_out.txt`) |
 | `exp17_selectivity_new_seeds.py` | Burst-synapse selectivity, pre-registered on new seeds 9-16. | **PASS**: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8. (`exp17_out.txt`) |
 | `exp18_ltp_threshold.py` | An LTP threshold: potentiate only if the input fired within 5 ms before the post spike (pre-registered; control exp11's direct inhibition). | Control **0/8**, threshold **0/8**: not kept. The gate blocked 91% of noise-synapse potentiation; mean ratio 1.839 in both arms; selectivity lower on 8/8 seeds. (`exp18_out.txt`) |
+| `exp19_volley_jitter.py` | A tighter volley: burst jitter 0.5 ms instead of 2 ms (pre-registered; control exp11's direct inhibition). | Control **0/8**, tighter volley **4/8**: kept. Mean ratio 2.130 against 1.839, higher on 8/8 seeds; the named mechanism is undetermined, since depression events in the volley rose on 6/8 seeds. (`exp19_out.txt`) |
 
 ### exp3, every run kept
 - **Run 1** (`exp3_stdp_run1_null.py`, 10 mV, 30 s): **null** — the output neuron never fired
@@ -274,6 +275,44 @@ exp16's on 8 of 8 seeds.
 - Per-seed tables, histograms and gate counts are in `exp18_out.txt`; the figures above are in
   `exp18_summary_out.txt`; the reading is in `docs/SYNTHESIS_exp11-18_2026-11-20.md`.
 
+### exp19: a tighter volley (2026-11-20)
+
+The plan was on main before any code (`prereg/PREREG_exp19_volley_jitter.md`, with Amendment 1). The code and
+Amendment 2 were pushed, and draft #13 opened, before the run (commit 5920d3c).
+
+The question was what holds the claimed burst synapses near 3x the background. The plan named one candidate: the
+claimer fires inside its own group's volley, so the volley's later spikes depress what its earlier spikes
+potentiated.
+
+The change: each burst spike's jitter is 0.5 ms instead of 2 ms, and nothing else. It changes the input, not the
+network or the plasticity rule, and a tighter volley also drives the outputs harder. The control is exp11's direct
+inhibition, reproduced exactly: 8/8 against exp16.
+
+- **Bar (a AND b): control 0/8, tighter volley 4/8** (seeds 4-7). **Kept** under the keep rule.
+- **Mechanism: undetermined**, as the plan's rules read it.
+  - It needed a pass on 6 of 8, and 4 came.
+  - Selectivity held: at least 2.0 on 8/8 against 7/8, with a mean of 2.739 against 2.547.
+  - The named mediator went the other way. Depression events within 10 ms per own-group burst were lower on 2 of 8
+    seeds and higher on 6 (mean +9.6%).
+- **The whole distribution moved, not a tail.** The ratio rose on 8 of 8 seeds, from 1.56-1.92 (mean 1.839) to
+  1.92-2.32 (mean 2.130). 19 of 24 per-group ratios passed 2.0, against 2 of 24.
+  - Seed 1 failed the bar because two groups went to one output.
+  - Seeds 2, 3 and 8 failed because one or two groups stayed under 2.0 (1.78-1.96).
+- **The split (tighter over control):** claimed burst synapses +13.2%, other groups' +7.3%, silent burst -6.4%, noise
+  -6.8 to -7.1%. The claimed synapses reached 3.27 times the background, against 2.69.
+- **Drive and timing:**
+  - The claimers answered 92.3% of their own volleys within 20 ms, against 82.6%. That rise of 11.8% is under the
+    plan's 20% line, which applies only to a SUPPORTED reading.
+  - Their first spike came 1.09 ms after the volley's onset, against 4.53 ms.
+  - No synapse came near wmax: 0 of 480 at or above 1.8.
+- **Post hoc:** potentiation made up 69% of the 10 ms events in the control and 70% under the tighter volley.
+  - So the share of a group's spikes landing before the claimer's spike barely moved, though the plan expected the
+    tighter volley to put most of it first.
+  - Both counts rose roughly in step with the extra volleys answered.
+  - The nominal net amount per volley rose 31%.
+- One network and one jitter value; drive against timing is still open. Per-seed tables, counters and histograms
+  are in `exp19_out.txt`, and the figures above in `exp19_summary_out.txt`.
+
 ## Method notes
 
 Bars before runs, nulls and failures kept beside the successes, controls where an effect is
@@ -289,13 +328,13 @@ One portable file shared across these repositories. It drives each of its checks
 then checks this repository and prints what it examined:
 
 - **Claims** (`docs/CLAIMS_INDEX.json`): each result above, the exact sentence where it stands and the script that
-  reproduces it. All seventeen are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because
-  they need PyTorch, snnTorch and Brian2; it only checks that every script parses. Three have their figures in a
+  reproduces it. All eighteen are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because
+  they need PyTorch, snnTorch and Brian2; it only checks that every script parses. Nine have their figures in a
   shipped log: exp3 run 3 (`controls/exp3_ctrl_sync_seed1.out`), exp11 (`exp11_out.txt`), exp12
-  (`exp12_out.txt`) and exp14-18 (`exp14_out.txt` to `exp18_out.txt`; exp16, exp17 and exp18 also ship their
-  weights).
-- **Retractions** (`docs/RETRACTED.json`): three, recorded 2026-11-09 (see Corrections). Nulls and failures are
-  reported, not retracted.
+  (`exp12_out.txt`) and exp14-19 (`exp14_out.txt` to `exp19_out.txt`; exp16 to exp19 also ship their weights).
+  (Corrected 2026-11-20: this line said "Three" after the list had grown.)
+- **Retractions** (`docs/RETRACTED.json`): four, three recorded 2026-11-09 and SE-R4 on 2026-11-20 (see
+  Corrections). Nulls and failures are reported, not retracted.
 - **Manifest** (`MANIFEST.sha256`): every tracked file pinned by sha256 (text LF-normalized, images raw).
 
 Passing means the results are auditable, not that they are true or that a rerun will match to the last digit.

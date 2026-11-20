@@ -129,3 +129,45 @@ check that the code runs and that its counters count what they say.
     input spikes on Brian2's grid and keeps its pre-before-post order within a step. The match held for the four
     counts at both jitters.
 - Seeds run in parallel, eight workers, numpy code generation, as in exp18.
+
+---
+
+## Result (2026-11-20, added after the run; everything above is unchanged)
+
+Run on TETSU, Brian2 2.10.1 and numpy 2.5.2, eight workers, from commit 5920d3c.
+- That commit was pushed, and draft #13 opened at 11:23:09 UTC, before the run (11:23:17 to 11:27:05 UTC).
+- Full log: `exp19_out.txt`. Summary figures: `exp19_summary_out.txt`. Its script was written during the run, before
+  the log was read.
+
+- **REPRODUCTION:** the control matched exp16's published ratio on 8 of 8 seeds.
+- **COPY CHECK:** the counted control reproduced the imported control's spike counts and end weights exactly on 8
+  of 8 seeds.
+- **REGIME GUARD:** 0 of 8 seeds. Outputs fired 145-246 spikes, against 103-178 in the control.
+- **BAR (a AND b):** control 0/8, treatment 4/8 (seeds 4, 5, 6 and 7).
+- **KEEP RULE: KEPT.** Strictly more seeds than the control.
+- **MECHANISM: UNDETERMINED.**
+  - (1) fails: 4 of 8, short of 6.
+  - (2) holds: selectivity at least 2.0 on 8/8 against 7/8; mean 2.739 against 2.547.
+  - (3) fails: depression events within 10 ms per own-group burst were lower than the control's on 2 of 8 seeds
+    (1 and 4) and higher on 6. Mean 5.649 against 5.153, +9.6%.
+  - REFUTED needs (3), so it is not reached either.
+- **DRIVE (Amendment 1):** own-group volleys answered within 20 ms, pooled, 0.923 against 0.826. That is a rise of
+  11.8%, under the 20% line. The qualifier applies only to a SUPPORTED reading.
+- **SATURATION:** no claimed burst synapse at or above 1.8 in either arm (0 of 480).
+- **Counters, no bar** (per own-group burst):
+  - potentiation events within 10 ms 13.235 against 11.470, +15.4%, higher on 8 of 8 seeds;
+  - the 100 ms counts are within 0.01 of the 10 ms counts on every seed;
+  - nominal net amount +0.0710 against +0.0542.
+- **Latency** (means of seed means):
+  - from the onset, 1.09 ms against 4.53 ms;
+  - from the volley's scheduled centre, 0.16 ms against 0.81 ms.
+- **The split (treatment over control):**
+  - claimed burst synapses +13.2%, other groups' burst synapses +7.3%;
+  - silent burst synapses -6.4%;
+  - noise synapses -7.1% on the claimed inputs and -6.8% on inputs 60-99;
+  - the claimed burst synapses over the background, (s + n)/2: 3.27 against 2.69.
+- **Distributions:**
+  - ratio: control 1.56-1.92, treatment 1.92-2.32. Higher on 8 of 8 seeds; mean 2.130 against 1.839. 19 of 24
+    per-group ratios above 2.0, against 2 of 24.
+  - selectivity: control 1.83-3.05, treatment 2.07-3.44, higher on 6 of 8.
+  - The histograms are in the log.

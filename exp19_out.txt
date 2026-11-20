@@ -1,0 +1,91 @@
+exp19: a tighter volley (burst jitter sd 0.5 ms against 2 ms) on exp11's direct inhibition, seeds [1, 2, 3, 4, 5, 6, 7, 8] (pre-registered: prereg/PREREG_exp19_volley_jitter.md with Amendments 1 and 2; 8 workers, numpy)
+
+control   seed 1: fail claim=[0, 1, 2] per-group=[1.69, 1.9, 1.91] ratio=1.83  (exp16 published 1.83; counted copy IDENTICAL) spk=[118, 162, 165] sel 1.11->2.56 | b 0.702 n_g 0.252 s 0.248 n 0.272 o 0.276
+          per own-group burst: dep10 5.123 dep100 5.123 pot10 11.944 pot100 11.944 | nominal pot10 +0.10853 dep10 -0.05012 net +0.05841
+          responses within 20 ms: own 407/480 (0.848), other 35/960 (0.036); latency from onset mean 4.62 ms median 4.44 ms; from centre mean 0.85 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 2: fail claim=[1, 2, 1] per-group=[1.29, 1.67, 1.72] ratio=1.56  (exp16 published 1.56; counted copy IDENTICAL) spk=[103, 135, 138] sel 1.06->1.83 | b 0.564 n_g 0.234 s 0.247 n 0.264 o 0.338
+          per own-group burst: dep10 3.210 dep100 3.210 pot10 7.873 pot100 7.873 | nominal pot10 +0.07157 dep10 -0.03134 net +0.04023
+          responses within 20 ms: own 266/480 (0.554), other 7/480 (0.015); latency from onset mean 4.69 ms median 4.47 ms; from centre mean 0.96 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 3: fail claim=[2, 0, 1] per-group=[2.1, 1.78, 1.86] ratio=1.92  (exp16 published 1.92; counted copy IDENTICAL) spk=[137, 141, 178] sel 1.21->2.84 | b 0.711 n_g 0.243 s 0.254 n 0.246 o 0.252
+          per own-group burst: dep10 6.065 dep100 6.065 pot10 12.598 pot100 12.598 | nominal pot10 +0.11498 dep10 -0.05916 net +0.05582
+          responses within 20 ms: own 446/480 (0.929), other 8/960 (0.008); latency from onset mean 4.45 ms median 4.40 ms; from centre mean 0.72 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 4: fail claim=[0, 2, 1] per-group=[1.73, 1.99, 1.85] ratio=1.86  (exp16 published 1.86; counted copy IDENTICAL) spk=[133, 152, 157] sel 1.05->2.34 | b 0.695 n_g 0.254 s 0.268 n 0.243 o 0.299
+          per own-group burst: dep10 5.015 dep100 5.015 pot10 11.481 pot100 11.481 | nominal pot10 +0.10463 dep10 -0.04894 net +0.05569
+          responses within 20 ms: own 391/480 (0.815), other 46/960 (0.048); latency from onset mean 4.49 ms median 4.41 ms; from centre mean 0.83 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 5: fail claim=[0, 2, 1] per-group=[1.83, 1.94, 1.94] ratio=1.9  (exp16 published 1.9; counted copy IDENTICAL) spk=[144, 162, 138] sel 1.10->2.55 | b 0.694 n_g 0.237 s 0.250 n 0.240 o 0.284
+          per own-group burst: dep10 4.669 dep100 4.669 pot10 11.238 pot100 11.246 | nominal pot10 +0.10223 dep10 -0.04553 net +0.05669
+          responses within 20 ms: own 380/480 (0.792), other 62/960 (0.065); latency from onset mean 4.62 ms median 4.39 ms; from centre mean 0.92 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 6: fail claim=[0, 2, 1] per-group=[1.91, 1.94, 1.89] ratio=1.91  (exp16 published 1.91; counted copy IDENTICAL) spk=[158, 145, 152] sel 1.16->2.46 | b 0.696 n_g 0.288 s 0.252 n 0.262 o 0.285
+          per own-group burst: dep10 5.606 dep100 5.606 pot10 11.927 pot100 11.927 | nominal pot10 +0.10878 dep10 -0.05475 net +0.05403
+          responses within 20 ms: own 419/480 (0.873), other 34/960 (0.035); latency from onset mean 4.47 ms median 4.39 ms; from centre mean 0.75 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 7: fail claim=[0, 2, 1] per-group=[1.92, 1.73, 2.06] ratio=1.9  (exp16 published 1.9; counted copy IDENTICAL) spk=[144, 150, 154] sel 1.13->2.74 | b 0.713 n_g 0.230 s 0.250 n 0.249 o 0.263
+          per own-group burst: dep10 5.675 dep100 5.675 pot10 12.194 pot100 12.194 | nominal pot10 +0.11122 dep10 -0.05540 net +0.05582
+          responses within 20 ms: own 424/480 (0.883), other 19/960 (0.020); latency from onset mean 4.45 ms median 4.37 ms; from centre mean 0.73 ms | claimed burst synapses >= 1.8: 0/60
+control   seed 8: fail claim=[0, 2, 1] per-group=[1.95, 1.82, 1.74] ratio=1.83  (exp16 published 1.83; counted copy IDENTICAL) spk=[163, 143, 140] sel 1.22->3.05 | b 0.697 n_g 0.264 s 0.266 n 0.257 o 0.229
+          per own-group burst: dep10 5.858 dep100 5.858 pot10 12.508 pot100 12.508 | nominal pot10 +0.11413 dep10 -0.05723 net +0.05690
+          responses within 20 ms: own 437/480 (0.910), other 5/960 (0.005); latency from onset mean 4.42 ms median 4.33 ms; from centre mean 0.72 ms | claimed burst synapses >= 1.8: 0/60
+
+treatment seed 1: fail claim=[1, 1, 2] per-group=[2.17, 2.51, 2.27] ratio=2.32 spk=[163, 246, 189] sel 1.11->2.07 | b 0.798 n_g 0.213 s 0.206 n 0.231 o 0.413
+          per own-group burst: dep10 4.248 dep100 4.248 pot10 13.029 pot100 13.029 | nominal pot10 +0.12697 dep10 -0.04390 net +0.08307
+          responses within 20 ms: own 408/480 (0.850), other 20/480 (0.042); latency from onset mean 1.17 ms median 1.14 ms; from centre mean 0.23 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 2: fail claim=[1, 2, 0] per-group=[2.17, 1.82, 1.78] ratio=1.92 spk=[152, 180, 155] sel 1.06->2.60 | b 0.726 n_g 0.218 s 0.235 n 0.259 o 0.290
+          per own-group burst: dep10 5.071 dep100 5.071 pot10 12.096 pot100 12.096 | nominal pot10 +0.11806 dep10 -0.05219 net +0.06587
+          responses within 20 ms: own 409/480 (0.852), other 75/960 (0.078); latency from onset mean 1.12 ms median 1.07 ms; from centre mean 0.18 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 3: fail claim=[2, 0, 1] per-group=[2.23, 1.93, 2.11] ratio=2.09 spk=[145, 158, 189] sel 1.21->3.08 | b 0.772 n_g 0.235 s 0.248 n 0.234 o 0.253
+          per own-group burst: dep10 6.456 dep100 6.456 pot10 13.498 pot100 13.498 | nominal pot10 +0.13191 dep10 -0.06645 net +0.06545
+          responses within 20 ms: own 469/480 (0.977), other 13/960 (0.014); latency from onset mean 1.05 ms median 1.01 ms; from centre mean 0.11 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 4: PASS claim=[2, 0, 1] per-group=[2.12, 2.26, 2.08] ratio=2.15 spk=[188, 171, 195] sel 1.05->2.22 | b 0.766 n_g 0.223 s 0.243 n 0.217 o 0.357
+          per own-group burst: dep10 4.994 dep100 4.994 pot10 12.660 pot100 12.660 | nominal pot10 +0.12353 dep10 -0.05154 net +0.07200
+          responses within 20 ms: own 418/480 (0.871), other 130/960 (0.135); latency from onset mean 1.11 ms median 1.07 ms; from centre mean 0.20 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 5: PASS claim=[0, 2, 1] per-group=[2.04, 2.18, 2.25] ratio=2.16 spk=[172, 197, 156] sel 1.10->2.72 | b 0.774 n_g 0.222 s 0.236 n 0.226 o 0.292
+          per own-group burst: dep10 5.617 dep100 5.617 pot10 13.248 pot100 13.248 | nominal pot10 +0.12929 dep10 -0.05788 net +0.07142
+          responses within 20 ms: own 443/480 (0.923), other 72/960 (0.075); latency from onset mean 1.10 ms median 1.05 ms; from centre mean 0.17 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 6: PASS claim=[0, 2, 1] per-group=[2.23, 2.13, 2.13] ratio=2.17 spk=[183, 161, 173] sel 1.16->2.77 | b 0.782 n_g 0.277 s 0.242 n 0.247 o 0.287
+          per own-group burst: dep10 6.217 dep100 6.217 pot10 13.567 pot100 13.567 | nominal pot10 +0.13253 dep10 -0.06401 net +0.06852
+          responses within 20 ms: own 463/480 (0.965), other 42/960 (0.044); latency from onset mean 1.06 ms median 1.02 ms; from centre mean 0.12 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 7: PASS claim=[0, 2, 1] per-group=[2.2, 2.01, 2.39] ratio=2.2 spk=[164, 178, 171] sel 1.13->3.01 | b 0.805 n_g 0.218 s 0.236 n 0.232 o 0.272
+          per own-group burst: dep10 6.088 dep100 6.088 pot10 13.804 pot100 13.804 | nominal pot10 +0.13483 dep10 -0.06289 net +0.07193
+          responses within 20 ms: own 458/480 (0.954), other 35/960 (0.036); latency from onset mean 1.05 ms median 1.04 ms; from centre mean 0.12 ms | claimed burst synapses >= 1.8: 0/60
+treatment seed 8: fail claim=[0, 2, 1] per-group=[2.23, 1.96, 1.89] ratio=2.03 spk=[180, 157, 161] sel 1.22->3.44 | b 0.773 n_g 0.254 s 0.258 n 0.248 o 0.224
+          per own-group burst: dep10 6.498 dep100 6.498 pot10 13.981 pot100 13.981 | nominal pot10 +0.13653 dep10 -0.06708 net +0.06945
+          responses within 20 ms: own 475/480 (0.990), other 6/960 (0.006); latency from onset mean 1.05 ms median 1.03 ms; from centre mean 0.12 ms | claimed burst synapses >= 1.8: 0/60
+
+Per-seed distributions (bins of 0.1), read beside the counts:
+  control ratio: 1.83 1.56 1.92 1.86 1.90 1.91 1.90 1.83
+    1.5-1.6 | #
+    1.8-1.9 | ###
+    1.9-2.0 | ####
+  control selectivity: 2.56 1.83 2.84 2.34 2.55 2.46 2.74 3.05
+    1.8-1.9 | #
+    2.3-2.4 | #
+    2.4-2.5 | #
+    2.5-2.6 | ##
+    2.7-2.8 | #
+    2.8-2.9 | #
+    3.0-3.1 | #
+  treatment ratio: 2.32 1.92 2.09 2.15 2.16 2.17 2.20 2.03
+    1.9-2.0 | #
+    2.0-2.1 | ##
+    2.1-2.2 | ###
+    2.2-2.3 | #
+    2.3-2.4 | #
+  treatment selectivity: 2.07 2.60 3.08 2.22 2.72 2.77 3.01 3.44
+    2.0-2.1 | #
+    2.2-2.3 | #
+    2.6-2.7 | #
+    2.7-2.8 | ##
+    3.0-3.1 | ##
+    >= 3.2 | #
+
+REPRODUCTION: control matches exp16's published ratio on 8/8 seeds
+COPY CHECK: the counted control is identical to the imported control on 8/8 seeds
+REGIME GUARD (treatment): 0/8 seeds out of regime   (control, for reference: 0/8)
+BAR (a AND b): control 0/8, treatment 4/8
+KEEP RULE (pre-registered): KEPT -- strictly more seeds than the control
+MECHANISM (1) (a AND b) on >= 6 of 8: treatment 4/8 -> fails
+MECHANISM (2) selectivity >= 2.0 on control 7/8, treatment 8/8; mean control 2.547, treatment 2.739 -> holds
+MECHANISM (3) depression events within 10 ms per own-group burst lower than the control's on 2/8 seeds [1, 4] -> fails
+DRIVE: own-group volleys answered within 20 ms, pooled: control 3170/3840 (0.826), treatment 3543/3840 (0.923); treatment/control 1.118
+SATURATION: claimed burst synapses >= 1.8, pooled: control 0.000, treatment 0.000
+READING (pre-registered): UNDETERMINED -- reported as the numbers
+saved exp19_weights.npz

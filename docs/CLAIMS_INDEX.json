@@ -184,6 +184,19 @@
     "exp18_out.txt",
     "exp18_weights.npz"
    ]
+  },
+  {
+   "id": "SE-K18",
+   "claim": "A tighter volley (burst jitter 0.5 ms instead of 2 ms) passes exp11's bar on more seeds than exp11's direct inhibition and is kept; the pre-registered mechanism reading is undetermined.",
+   "source": "README.md",
+   "exact": "Control **0/8**, tighter volley **4/8**: kept. Mean ratio 2.130 against 1.839, higher on 8/8 seeds; the named mechanism is undetermined, since depression events in the volley rose on 6/8 seeds. (`exp19_out.txt`)",
+   "reproduce": "python exp19_volley_jitter.py",
+   "reproduction_status": "custodian-run",
+   "limits": "One architecture (direct inhibition), one jitter value (0.5 ms), seeds 1-8, one machine, run 2026-11-20 with Brian2 2.10.1 and numpy 2.5.2. The plan was on main before the code (d7c4ac1); the code and Amendment 2 were pushed before the run (commit 5920d3c, draft #13). It changes the input, not the network or the plasticity rule, and a tighter volley also drives the outputs harder. The shipped log holds the per-seed figures and the counters.",
+   "data": [
+    "exp19_out.txt",
+    "exp19_weights.npz"
+   ]
   }
  ]
 }

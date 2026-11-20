@@ -1,0 +1,19 @@
+control: PASS 0/8; ratio mean 1.839; selectivity mean 2.546; distinct claims 7/8; per-group ratios above 2.0 2/24; spikes 103-178
+   split means: b 0.684  n_g 0.250  s 0.254  n 0.254  o 0.278  b/o 2.50  b/((s+n)/2) 2.69
+   per own-group burst, means: dep10 5.153  dep100 5.153  pot10 11.470  pot100 11.471  nominal net +0.05420
+   responses pooled: own 3170/3840 (0.826), other 216/7200 (0.030); latency mean of seed means: from onset 4.53 ms, from centre 0.81 ms; saturation pooled 0/480
+treatment: PASS 4/8; ratio mean 2.130; selectivity mean 2.739; distinct claims 7/8; per-group ratios above 2.0 19/24; spikes 145-246
+   split means: b 0.774  n_g 0.233  s 0.238  n 0.237  o 0.298  b/o 2.68  b/((s+n)/2) 3.27
+   per own-group burst, means: dep10 5.649  dep100 5.649  pot10 13.235  pot100 13.235  nominal net +0.07096
+   responses pooled: own 3543/3840 (0.923), other 393/7200 (0.055); latency mean of seed means: from onset 1.09 ms, from centre 0.16 ms; saturation pooled 0/480
+treatment / control, claimed burst b: 1.132 (+13.2%)
+treatment / control, other-group burst o: 1.073 (+7.3%)
+treatment / control, silent burst s: 0.936 (-6.4%)
+treatment / control, claimed inputs' noise n_g: 0.929 (-7.1%)
+treatment / control, noise on 60-99 n: 0.932 (-6.8%)
+treatment / control, dep10 per burst: 1.096 (+9.6%)
+treatment / control, pot10 per burst: 1.154 (+15.4%)
+selectivity: treatment higher on 6/8, lower on 2/8, equal on 0/8
+ratio: treatment higher on 8/8, lower on 0/8, equal on 0/8
+dep10 per burst: treatment higher on 6/8, lower on 2/8, equal on 0/8
+pot10 per burst: treatment higher on 8/8, lower on 0/8, equal on 0/8

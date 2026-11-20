@@ -1,6 +1,6 @@
 {
  "what": "Each result this repository states, the exact sentence where it stands, how it is reproduced, and whether it can be reproduced from this repository. Checked fail-closed by research_grade.py. The experiments need PyTorch, snnTorch and Brian2 (requirements.txt) and are not run in CI; 'custodian-run' means the author ran the shipped script, not that CI did.",
- "as_of": "2026-11-09",
+ "as_of": "2026-11-20",
  "claims": [
   {
    "id": "SE-K1",
@@ -170,6 +170,19 @@
    "data": [
     "exp17_out.txt",
     "exp17_weights.npz"
+   ]
+  },
+  {
+   "id": "SE-K17",
+   "claim": "An LTP threshold tied to pre-before-post timing does not pass exp11's bar on more seeds than exp11's direct inhibition, and is not kept.",
+   "source": "README.md",
+   "exact": "Control **0/8**, threshold **0/8**: not kept. The gate blocked 91% of noise-synapse potentiation; mean ratio 1.839 in both arms; selectivity lower on 8/8 seeds. (`exp18_out.txt`)",
+   "reproduce": "python exp18_ltp_threshold.py",
+   "reproduction_status": "custodian-run",
+   "limits": "One architecture (direct inhibition), one window (5 ms), seeds 1-8, one machine, run 2026-11-20 with Brian2 2.10.1 and numpy 2.5.2; plan and code committed and pushed before the run (prereg/, commit d6fe1e5). The shipped log holds the per-seed figures and the gate counts.",
+   "data": [
+    "exp18_out.txt",
+    "exp18_weights.npz"
    ]
   }
  ]

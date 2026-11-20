@@ -1,0 +1,15 @@
+control: ratio mean 1.839; selectivity mean 2.546; distinct claims 7/8; per-group ratios above 2.0 2/24; spikes 103-178
+   split means: b 0.684  n_g 0.250  s 0.254  n 0.254  o 0.278  b/o 2.50
+threshold: ratio mean 1.839; selectivity mean 2.320; distinct claims 8/8; per-group ratios above 2.0 3/24; spikes 109-180
+   split means: b 0.731  n_g 0.203  s 0.301  n 0.209  o 0.322  b/o 2.29
+threshold / control, claimed burst b: 1.069 (+6.9%)
+threshold / control, other-group burst o: 1.158 (+15.8%)
+threshold / control, silent burst s: 1.184 (+18.4%)
+threshold / control, claimed inputs' noise n_g: 0.810 (-19.0%)
+threshold / control, noise on 60-99 n: 0.821 (-17.9%)
+selectivity lower under the threshold on 8/8 seeds; ratio higher on 5/8, lower on 2/8, equal on 1/8
+gate, all 8 seeds, burst, own group: let through 41888, blocked 1951, share let through 0.955
+gate, all 8 seeds, burst, other groups: let through 4794, blocked 342, share let through 0.933
+gate, all 8 seeds, burst, inputs 60-99: let through 0, blocked 0, share let through nan
+gate, all 8 seeds, noise: let through 12189, blocked 129379, share let through 0.086
+noise share let through per seed: 0.083-0.090

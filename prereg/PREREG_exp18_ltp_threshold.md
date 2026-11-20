@@ -78,3 +78,32 @@ throughout: the ratio is kept as the bar for comparability with exp7-12, not as 
 One architecture, one window. A null says this gate at 5 ms did not move the bar on these seeds, not that no LTP
 threshold could. A keep on the ratio alone says the ratio moved; the validity reading says whether selectivity moved
 with it. Behaviour (replaying each group's burst with the weights frozen) is not measured here.
+
+---
+
+## Result (2026-11-20, added after the run; everything above is unchanged)
+
+Run on TETSU, Brian2 2.10.1 and numpy 2.5.2 (as requirements.txt pins), 8 workers, after the smoke test on seed 0
+(code unchanged by it). Full log: `exp18_out.txt`; summary figures: `exp18_summary_out.txt`.
+
+- **REPRODUCTION:** the control matched exp16's published ratio on 8 of 8 seeds.
+- **COLLAPSE:** none. No treatment output fell under 20 spikes on any seed; outputs fired 109-180 spikes, against
+  103-178 in the control.
+- **BAR (a AND b):** control 0/8, threshold 0/8.
+- **KEEP RULE: NOT KEPT.** Not strictly more seeds than the control. A null, recorded as is; the threshold was not
+  tuned.
+- **VALIDITY:** not reached; it reads only a keep.
+- **Selectivity:** at least 2.0 on 7/8 in both arms. The mean fell from 2.547 to 2.322, and it was lower under the
+  threshold on 8 of 8 seeds.
+- **The gate:** over the eight seeds it let through 8.6% of potentiation events on noise synapses (12,189 of
+  141,568), 95.5% on the claimer's own burst synapses and 93.3% on the other groups' burst synapses. Burst synapses
+  on inputs 60-99 counted 0, as expected.
+- **The split (threshold over control):**
+  - noise synapses on the claimed inputs -19.0%, and on inputs 60-99 -17.9%;
+  - silent burst synapses on inputs 60-99 +18.4%;
+  - other groups' burst synapses +15.8%;
+  - the claimed group's burst synapses +6.9%.
+
+  Mean ratio 1.839 in both arms: higher under the threshold on 5 seeds, lower on 2, equal on 1.
+- **Distributions:** ratio, control 1.56-1.92 and threshold 1.45-1.95; selectivity, control 1.83-3.05 and
+  threshold 1.82-2.78. The histograms are in the log.

@@ -54,6 +54,7 @@ Run any experiment with that interpreter, e.g. `.venv/Scripts/python.exe exp1_mn
 | `exp15_desync_null.py` | The null as worded: burst spikes keep their input and count, at independent random times. | Ratio 1.07; outputs nearly silent (0-9 spikes), so its "pattern learning" verdict is set aside. (`exp15_out.txt`) |
 | `exp16_rescore.py` | Reruns all three conditions saving weights at t = 0 and at the end (measurement only). | The score is 1.07 before any learning; the rise is in the burst synapses. (`exp16_out.txt`) |
 | `exp17_selectivity_new_seeds.py` | Burst-synapse selectivity, pre-registered on new seeds 9-16. | **PASS**: >= 2.0 on 7/8, above start 8/8, above a 1000-relabeling null 8/8. (`exp17_out.txt`) |
+| `exp18_ltp_threshold.py` | An LTP threshold: potentiate only if the input fired within 5 ms before the post spike (pre-registered; control exp11's direct inhibition). | Control **0/8**, threshold **0/8**: not kept. The gate blocked 91% of noise-synapse potentiation; mean ratio 1.839 in both arms; selectivity lower on 8/8 seeds. (`exp18_out.txt`) |
 
 ### exp3, every run kept
 - **Run 1** (`exp3_stdp_run1_null.py`, 10 mV, 30 s): **null** — the output neuron never fired
@@ -240,6 +241,31 @@ One architecture (direct inhibition); the measure was suggested by seeds 1-8 and
 this changes: the 2x bar of exp5-12 was set on a ratio that mostly separates inputs that burst from inputs that
 don't. exp11 and exp12 use the same score, so the confound applies to their ~1.9x too, but they were not re-tested.
 
+### exp18: an LTP threshold tied to timing (2026-11-20)
+
+The second of four prompts from the operator. It was pre-registered with its code and pushed before any run
+(`prereg/PREREG_exp18_ltp_threshold.md`, commit d6fe1e5). SE-R3 stands: it tests one change, not the withdrawn
+reading.
+
+What came first is a split of the ratio on exp17's saved weights (`docs/SYNTHESIS_exp14-17_2026-11-20.md`). The
+ratio is about (1 + b/x)/2, so 2x asks for the learned burst synapse at about 3x the background x.
+
+The change: a post spike potentiates a synapse only if its input fired within the last 5 ms. Depression and
+everything else are unchanged. The control is exp11's direct inhibition, reproduced exactly: its ratios matched
+exp16's on 8 of 8 seeds.
+
+- **Bar (a AND b): control 0/8, threshold 0/8. Not kept:** a null, recorded as is; the threshold was not tuned.
+- **The gate did what it was built to do.** Over the eight seeds it let through 8.6% of potentiation events on noise
+  synapses and 95.5% on the claimer's own burst synapses. No collapse: outputs fired 109-180 spikes (control
+  103-178).
+- **The ratio did not move:** mean 1.839 in both arms. The noise synapses lost weight (-19.0% on the claimed
+  inputs). Per-output normalisation then gave that weight to every other synapse, including the silent burst
+  synapses in the denominator (+18.4%), so the top and bottom of the ratio rose together.
+- **Selectivity fell** on 8 of 8 seeds, with a mean of 2.547 against 2.322 (>= 2.0 on 7/8 in both). The other
+  groups' burst synapses rose 15.8% and the claimed group's 6.9%.
+- Per-seed tables, histograms and gate counts are in `exp18_out.txt`; the figures above are in
+  `exp18_summary_out.txt`; the reading is in `docs/SYNTHESIS_exp11-18_2026-11-20.md`.
+
 ## Method notes
 
 Bars before runs, nulls and failures kept beside the successes, controls where an effect is
@@ -255,10 +281,11 @@ One portable file shared across these repositories. It drives each of its checks
 then checks this repository and prints what it examined:
 
 - **Claims** (`docs/CLAIMS_INDEX.json`): each result above, the exact sentence where it stands and the script that
-  reproduces it. All sixteen are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because
+  reproduces it. All seventeen are `custodian-run`: the author ran the shipped, seeded scripts. CI does not, because
   they need PyTorch, snnTorch and Brian2; it only checks that every script parses. Three have their figures in a
   shipped log: exp3 run 3 (`controls/exp3_ctrl_sync_seed1.out`), exp11 (`exp11_out.txt`), exp12
-  (`exp12_out.txt`) and exp14-17 (`exp14_out.txt` to `exp17_out.txt`; exp16 and exp17 also ship their weights).
+  (`exp12_out.txt`) and exp14-18 (`exp14_out.txt` to `exp18_out.txt`; exp16, exp17 and exp18 also ship their
+  weights).
 - **Retractions** (`docs/RETRACTED.json`): three, recorded 2026-11-09 (see Corrections). Nulls and failures are
   reported, not retracted.
 - **Manifest** (`MANIFEST.sha256`): every tracked file pinned by sha256 (text LF-normalized, images raw).

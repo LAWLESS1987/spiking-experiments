@@ -1,0 +1,60 @@
+exp18: LTP threshold (pre-before-post within 5 ms) vs exp11's direct inhibition, seeds [1, 2, 3, 4, 5, 6, 7, 8] (pre-registered: prereg/PREREG_exp18_ltp_threshold.md; 8 workers, numpy)
+
+control   seed 1: fail claim=[0, 1, 2] per-group=[1.69, 1.9, 1.91] ratio=1.83  (exp16 published 1.83) spk=[118, 162, 165] sel 1.11->2.56 perm95 1.31 | b 0.702 n_g 0.252 s 0.248 n 0.272 o 0.276
+control   seed 2: fail claim=[1, 2, 1] per-group=[1.29, 1.67, 1.72] ratio=1.56  (exp16 published 1.56) spk=[103, 135, 138] sel 1.06->1.83 perm95 1.28 | b 0.564 n_g 0.234 s 0.247 n 0.264 o 0.338
+control   seed 3: fail claim=[2, 0, 1] per-group=[2.1, 1.78, 1.86] ratio=1.92  (exp16 published 1.92) spk=[137, 141, 178] sel 1.21->2.84 perm95 1.34 | b 0.711 n_g 0.243 s 0.254 n 0.246 o 0.252
+control   seed 4: fail claim=[0, 2, 1] per-group=[1.73, 1.99, 1.85] ratio=1.86  (exp16 published 1.86) spk=[133, 152, 157] sel 1.05->2.34 perm95 1.29 | b 0.695 n_g 0.254 s 0.268 n 0.243 o 0.299
+control   seed 5: fail claim=[0, 2, 1] per-group=[1.83, 1.94, 1.94] ratio=1.9  (exp16 published 1.9) spk=[144, 162, 138] sel 1.10->2.55 perm95 1.30 | b 0.694 n_g 0.237 s 0.250 n 0.240 o 0.284
+control   seed 6: fail claim=[0, 2, 1] per-group=[1.91, 1.94, 1.89] ratio=1.91  (exp16 published 1.91) spk=[158, 145, 152] sel 1.16->2.46 perm95 1.30 | b 0.696 n_g 0.288 s 0.252 n 0.262 o 0.285
+control   seed 7: fail claim=[0, 2, 1] per-group=[1.92, 1.73, 2.06] ratio=1.9  (exp16 published 1.9) spk=[144, 150, 154] sel 1.13->2.74 perm95 1.32 | b 0.713 n_g 0.230 s 0.250 n 0.249 o 0.263
+control   seed 8: fail claim=[0, 2, 1] per-group=[1.95, 1.82, 1.74] ratio=1.83  (exp16 published 1.83) spk=[163, 143, 140] sel 1.22->3.05 perm95 1.39 | b 0.697 n_g 0.264 s 0.266 n 0.257 o 0.229
+
+threshold seed 1: fail claim=[0, 1, 2] per-group=[1.63, 1.95, 1.95] ratio=1.84 spk=[119, 166, 165] sel 1.11->2.22 perm95 1.28 | b 0.740 n_g 0.203 s 0.289 n 0.224 o 0.336
+          LTP let through / blocked at post spikes: burst_own_group 5291/288; burst_other_groups 788/56; burst_60_99 0/0; noise 1486/16485
+threshold seed 2: fail claim=[0, 2, 1] per-group=[1.02, 1.65, 1.66] ratio=1.45 spk=[109, 127, 140] sel 1.06->1.82 perm95 1.29 | b 0.590 n_g 0.188 s 0.296 n 0.244 o 0.341
+          LTP let through / blocked at post spikes: burst_own_group 3630/181; burst_other_groups 1281/74; burst_60_99 0/0; noise 1322/13672
+threshold seed 3: fail claim=[2, 0, 1] per-group=[2.14, 1.8, 1.89] ratio=1.94 spk=[139, 142, 180] sel 1.21->2.60 perm95 1.32 | b 0.771 n_g 0.195 s 0.301 n 0.197 o 0.299
+          LTP let through / blocked at post spikes: burst_own_group 5800/260; burst_other_groups 131/20; burst_60_99 0/0; noise 1549/17090
+threshold seed 4: fail claim=[0, 2, 1] per-group=[1.72, 1.96, 1.84] ratio=1.84 spk=[134, 151, 157] sel 1.05->2.11 perm95 1.27 | b 0.737 n_g 0.202 s 0.314 n 0.196 o 0.350
+          LTP let through / blocked at post spikes: burst_own_group 5182/243; burst_other_groups 743/44; burst_60_99 0/0; noise 1551/15969
+threshold seed 5: fail claim=[0, 2, 1] per-group=[1.8, 1.97, 1.94] ratio=1.9 spk=[143, 166, 137] sel 1.10->2.35 perm95 1.28 | b 0.742 n_g 0.191 s 0.300 n 0.191 o 0.325
+          LTP let through / blocked at post spikes: burst_own_group 5189/275; burst_other_groups 783/69; burst_60_99 0/0; noise 1485/16436
+threshold seed 6: fail claim=[0, 2, 1] per-group=[1.94, 1.93, 1.89] ratio=1.92 spk=[161, 146, 153] sel 1.16->2.22 perm95 1.29 | b 0.746 n_g 0.235 s 0.299 n 0.212 o 0.338
+          LTP let through / blocked at post spikes: burst_own_group 5422/246; burst_other_groups 590/43; burst_60_99 0/0; noise 1622/16812
+threshold seed 7: fail claim=[0, 2, 1] per-group=[1.94, 1.72, 2.19] ratio=1.95 spk=[145, 157, 156] sel 1.13->2.46 perm95 1.29 | b 0.769 n_g 0.184 s 0.293 n 0.200 o 0.317
+          LTP let through / blocked at post spikes: burst_own_group 5621/224; burst_other_groups 428/26; burst_60_99 0/0; noise 1555/16629
+threshold seed 8: fail claim=[0, 2, 1] per-group=[2.06, 1.82, 1.72] ratio=1.87 spk=[166, 142, 140] sel 1.22->2.78 perm95 1.37 | b 0.752 n_g 0.223 s 0.317 n 0.205 o 0.271
+          LTP let through / blocked at post spikes: burst_own_group 5753/234; burst_other_groups 50/10; burst_60_99 0/0; noise 1619/16286
+
+Per-seed distributions (bins of 0.1), read beside the counts:
+  control ratio: 1.83 1.56 1.92 1.86 1.90 1.91 1.90 1.83
+    1.5-1.6 | #
+    1.8-1.9 | ###
+    1.9-2.0 | ####
+  control selectivity: 2.56 1.83 2.84 2.34 2.55 2.46 2.74 3.05
+    1.8-1.9 | #
+    2.3-2.4 | #
+    2.4-2.5 | #
+    2.5-2.6 | ##
+    2.7-2.8 | #
+    2.8-2.9 | #
+    3.0-3.1 | #
+  threshold ratio: 1.84 1.45 1.94 1.84 1.90 1.92 1.95 1.87
+    1.4-1.5 | #
+    1.8-1.9 | ###
+    1.9-2.0 | ####
+  threshold selectivity: 2.22 1.82 2.60 2.11 2.35 2.22 2.46 2.78
+    1.8-1.9 | #
+    2.1-2.2 | #
+    2.2-2.3 | ##
+    2.3-2.4 | #
+    2.4-2.5 | #
+    2.5-2.6 | #
+    2.7-2.8 | #
+
+REPRODUCTION: control matches exp16's published ratio on 8/8 seeds
+COLLAPSE CHECK: treatment seeds with an output under 20 spikes: 0/8
+BAR (a AND b): control 0/8, threshold 0/8
+KEEP RULE (pre-registered): NOT KEPT -- not strictly more seeds than the control (a null, recorded as is)
+SELECTIVITY: >= 2.0 on control 7/8, threshold 7/8; mean control 2.547, threshold 2.322
+saved exp18_weights.npz

@@ -87,3 +87,45 @@ Made after an outside read of the pull request (Gemini, signed out) and the post
   recorded as "timing and drive together, not separated".
 - **Saturation.** For both arms, the share of claimed burst synapses at or above 1.8 (0.9 * wmax) is reported. If
   it exceeds 10% in the treatment, any reading notes that the ceiling, not timing, may be what moved.
+
+---
+
+## Amendment 2 (2026-11-20, BEFORE any run on seeds 1-8; committed with the code; the text above is unchanged)
+
+Asked to run on 2026-11-20 ("Yes, run exp19"). Writing `exp19_volley_jitter.py` left choices the text above does
+not fix. They are fixed here, before any run on seeds 1-8. The only runs so far are on seed 0, for 2 s and 10 s, to
+check that the code runs and that its counters count what they say.
+
+- **How the control's counters are taken.**
+  - The control's bar, ratio and selectivity come from `exp16_rescore.run_once(s, "real")`, imported unchanged, as
+    fixed above.
+  - That function records no counters, so they come from `run_arm(s, 0.002)`: the same code path plus counters that
+    never feed back into the dynamics.
+  - It must reproduce the imported control's spike counts and end weights exactly; the check is printed per seed.
+  - A seed where it does not counts as NOT lower for criterion (3).
+  - The treatment is `run_arm(s, 0.0005)`.
+- **Events.** Both use last spike times, not the traces.
+  - A depression event is an input spike on a burst synapse whose output last spiked at most 10 ms earlier (100 ms
+    for the reported count).
+  - A potentiation event is an output spike at a burst synapse whose input last spiked at most 10 ms (100 ms) earlier.
+  - Also reported, with no bar: the nominal amounts (the trace values) of the 10 ms events.
+- **Per own-group burst.** For each group, take the counts on the synapses from its 20 inputs onto its own end-of-run
+  claimer. Sum them over the three groups, and divide by the number of those groups' bursts.
+- **Onset, response and latency.**
+  - A volley's onset is its earliest input spike.
+  - An output responds to a volley if it fires at least once within 20 ms after the onset.
+  - Latency is that first spike's time minus the onset: mean and median over the own-group volleys with a response.
+  - The latency from the volley's scheduled centre is also reported, with no rule. A tighter volley moves its first
+    spike towards the centre by itself.
+- **The 20% drive qualifier.** Per arm, pooled over the eight seeds: own-group volleys with a response, divided by
+  own-group volleys. "Rises by more than 20%" means the treatment's pooled share exceeds 1.2 times the control's.
+- **Saturation.** Pooled over the eight seeds' claimed burst synapses, 60 per seed; per-seed counts are printed
+  too. "Exceeds 10%" means the pooled share is above 0.10.
+- **Regime guard.** A seed counts if, in the treatment, an output fires under 20 spikes or over 534, or one output
+  claims all three groups.
+- **Checks made before any run on seeds 1-8, on seed 0:**
+  - In a 2 s run, the counted copy reproduced the imported control exactly.
+  - In a 10 s run, an independent recount from spike times gave the same numbers on all 300 burst synapses. It places
+    input spikes on Brian2's grid and keeps its pre-before-post order within a step. The match held for the four
+    counts at both jitters.
+- Seeds run in parallel, eight workers, numpy code generation, as in exp18.

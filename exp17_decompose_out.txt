@@ -1,0 +1,20 @@
+real     seed 9: g0: b 0.708 n_g 0.232 s 0.276 n 0.228 o 0.235 ratio 1.87  g1: b 0.721 n_g 0.222 s 0.223 n 0.243 o 0.258 ratio 2.02  g2: b 0.732 n_g 0.258 s 0.244 n 0.236 o 0.288 ratio 2.07
+real     seed 10: g0: b 0.711 n_g 0.224 s 0.231 n 0.237 o 0.250 ratio 2.00  g1: b 0.724 n_g 0.198 s 0.207 n 0.291 o 0.293 ratio 1.85  g2: b 0.705 n_g 0.240 s 0.231 n 0.232 o 0.218 ratio 2.04
+real     seed 11: g0: b 0.704 n_g 0.197 s 0.253 n 0.243 o 0.241 ratio 1.82  g1: b 0.679 n_g 0.249 s 0.252 n 0.234 o 0.284 ratio 1.91  g2: b 0.692 n_g 0.301 s 0.245 n 0.247 o 0.256 ratio 2.02
+real     seed 12: g0: b 0.714 n_g 0.214 s 0.277 n 0.241 o 0.266 ratio 1.79  g1: b 0.692 n_g 0.209 s 0.210 n 0.199 o 0.301 ratio 2.21  g2: b 0.708 n_g 0.208 s 0.262 n 0.262 o 0.355 ratio 1.75
+real     seed 13: g0: b 0.763 n_g 0.200 s 0.194 n 0.207 o 0.421 ratio 2.40  g1: b 0.623 n_g 0.229 s 0.275 n 0.212 o 0.333 ratio 1.75  g2: b 0.651 n_g 0.190 s 0.194 n 0.207 o 0.477 ratio 2.10
+real     seed 14: g0: b 0.733 n_g 0.234 s 0.236 n 0.254 o 0.274 ratio 1.98  g1: b 0.710 n_g 0.202 s 0.239 n 0.254 o 0.317 ratio 1.85  g2: b 0.532 n_g 0.251 s 0.233 n 0.217 o 0.327 ratio 1.74
+real     seed 15: g0: b 0.660 n_g 0.201 s 0.204 n 0.243 o 0.288 ratio 1.93  g1: b 0.766 n_g 0.237 s 0.241 n 0.240 o 0.246 ratio 2.09  g2: b 0.733 n_g 0.289 s 0.209 n 0.258 o 0.249 ratio 2.19
+real     seed 16: g0: b 0.667 n_g 0.248 s 0.270 n 0.223 o 0.247 ratio 1.86  g1: b 0.720 n_g 0.302 s 0.236 n 0.234 o 0.286 ratio 2.17  g2: b 0.654 n_g 0.285 s 0.260 n 0.239 o 0.263 ratio 1.88
+real     MEANS b 0.696  n_g 0.234  s 0.238  n 0.237  o 0.291  b/x 2.95  o/x 1.24  per-group ratio 1.97 (min 1.74, max 2.40; above 2.0: 10 of 24)
+
+shuffled seed 9: g0: b 0.503 n_g 0.277 s 0.215 n 0.215 o 0.489 ratio 1.81  g1: b 0.572 n_g 0.190 s 0.193 n 0.213 o 0.467 ratio 1.88  g2: b 0.495 n_g 0.235 s 0.215 n 0.215 o 0.493 ratio 1.70
+shuffled seed 10: g0: b 0.520 n_g 0.237 s 0.176 n 0.257 o 0.503 ratio 1.74  g1: b 0.508 n_g 0.178 s 0.176 n 0.257 o 0.509 ratio 1.58  g2: b 0.519 n_g 0.212 s 0.204 n 0.211 o 0.387 ratio 1.76
+shuffled seed 11: g0: b 0.541 n_g 0.173 s 0.226 n 0.218 o 0.411 ratio 1.61  g1: b 0.483 n_g 0.254 s 0.226 n 0.218 o 0.440 ratio 1.66  g2: b 0.515 n_g 0.267 s 0.212 n 0.226 o 0.444 ratio 1.78
+shuffled seed 12: g0: b 0.463 n_g 0.257 s 0.244 n 0.245 o 0.534 ratio 1.47  g1: b 0.543 n_g 0.239 s 0.244 n 0.245 o 0.494 ratio 1.60  g2: b 0.525 n_g 0.185 s 0.244 n 0.245 o 0.503 ratio 1.45
+shuffled seed 13: g0: b 0.541 n_g 0.219 s 0.203 n 0.226 o 0.477 ratio 1.77  g1: b 0.501 n_g 0.218 s 0.266 n 0.204 o 0.428 ratio 1.53  g2: b 0.510 n_g 0.212 s 0.203 n 0.226 o 0.493 ratio 1.68
+shuffled seed 14: g0: b 0.564 n_g 0.212 s 0.204 n 0.228 o 0.456 ratio 1.80  g1: b 0.532 n_g 0.194 s 0.210 n 0.227 o 0.493 ratio 1.66  g2: b 0.511 n_g 0.216 s 0.210 n 0.227 o 0.503 ratio 1.66
+shuffled seed 15: g0: b 0.451 n_g 0.208 s 0.195 n 0.255 o 0.435 ratio 1.46  g1: b 0.500 n_g 0.255 s 0.187 n 0.218 o 0.444 ratio 1.87  g2: b 0.501 n_g 0.278 s 0.195 n 0.255 o 0.410 ratio 1.73
+shuffled seed 16: g0: b 0.465 n_g 0.250 s 0.247 n 0.208 o 0.406 ratio 1.57  g1: b 0.486 n_g 0.295 s 0.224 n 0.227 o 0.437 ratio 1.74  g2: b 0.447 n_g 0.272 s 0.239 n 0.226 o 0.434 ratio 1.55
+shuffled MEANS b 0.508  n_g 0.231  s 0.215  n 0.229  o 0.462  b/x 2.30  o/x 2.09  per-group ratio 1.67 (min 1.45, max 1.88; above 2.0: 0 of 24)
+

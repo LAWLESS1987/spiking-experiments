@@ -293,23 +293,30 @@ inhibition, reproduced exactly: 8/8 against exp16.
   - It needed a pass on 6 of 8, and 4 came.
   - Selectivity held: at least 2.0 on 8/8 against 7/8, with a mean of 2.739 against 2.547.
   - The named mediator went the other way. Depression events within 10 ms per own-group burst were lower on 2 of 8
-    seeds and higher on 6 (mean +9.6%).
-- **The whole distribution moved, not a tail.** The ratio rose on 8 of 8 seeds, from 1.56-1.92 (mean 1.839) to
-  1.92-2.32 (mean 2.130). 19 of 24 per-group ratios passed 2.0, against 2 of 24.
+    seeds and higher on 6 (mean +9.6%). Per answered volley they fell 1.9% (post hoc, below).
+- **The whole distribution moved, not a tail.** The ratio rose on every seed, by 0.17 to 0.48, from 1.56-1.92
+  (mean 1.839) to 1.92-2.32 (mean 2.130). 19 of 24 per-group ratios passed 2.0, against 2 of 24.
   - Seed 1 failed the bar because two groups went to one output.
   - Seeds 2, 3 and 8 failed because one or two groups stayed under 2.0 (1.78-1.96).
 - **The split (tighter over control):** claimed burst synapses +13.2%, other groups' +7.3%, silent burst -6.4%, noise
   -6.8 to -7.1%. The claimed synapses reached 3.27 times the background, against 2.69.
 - **Drive and timing:**
   - The claimers answered 92.3% of their own volleys within 20 ms, against 82.6%. That rise of 11.8% is under the
-    plan's 20% line, which applies only to a SUPPORTED reading.
-  - Their first spike came 1.09 ms after the volley's onset, against 4.53 ms.
+    plan's 20% line, which applies only to a SUPPORTED reading. They also answered more of the other groups'
+    volleys: 5.5% against 3.0%.
+  - Their first spike came 1.09 ms after the volley's onset, against 4.53 ms. Most of that drop is how the onset is
+    defined: a tighter volley's first spike sits closer to its centre. Measured from the volley's centre, the first
+    spike came 0.16 ms after it, against 0.81 ms.
+  - Per own-group volley, the nominal net amount of the 10 ms events rose 31%: +0.0710 against +0.0542.
   - No synapse came near wmax: 0 of 480 at or above 1.8.
-- **Post hoc:** potentiation made up 69% of the 10 ms events in the control and 70% under the tighter volley.
-  - So the share of a group's spikes landing before the claimer's spike barely moved, though the plan expected the
-    tighter volley to put most of it first.
-  - Both counts rose roughly in step with the extra volleys answered.
-  - The nominal net amount per volley rose 31%.
+- **Post hoc,** after an outside read (`exp19_posthoc_out.txt`):
+  - Potentiation made up 69% of the 10 ms events in the control and 70% under the tighter volley. So the share of a
+    group's spikes landing before the claimer's spike barely moved, though the plan expected the tighter volley to
+    put most of it first.
+  - Per answered volley, potentiation events rose 3.2% and depression events fell 1.9%. Both counts per own-group
+    volley rose because more volleys were answered. An earlier wording of this point is corrected under SE-R5.
+  - Anchoring the 20 ms window at the volley's centre instead of its onset leaves the claimers' rise at 12-14%, so
+    the onset definition does not make the rise.
 - One network and one jitter value; drive against timing is still open. Per-seed tables, counters and histograms
   are in `exp19_out.txt`, and the figures above in `exp19_summary_out.txt`.
 
@@ -333,7 +340,7 @@ then checks this repository and prints what it examined:
   shipped log: exp3 run 3 (`controls/exp3_ctrl_sync_seed1.out`), exp11 (`exp11_out.txt`), exp12
   (`exp12_out.txt`) and exp14-19 (`exp14_out.txt` to `exp19_out.txt`; exp16 to exp19 also ship their weights).
   (Corrected 2026-11-20: this line said "Three" after the list had grown.)
-- **Retractions** (`docs/RETRACTED.json`): four, three recorded 2026-11-09 and SE-R4 on 2026-11-20 (see
+- **Retractions** (`docs/RETRACTED.json`): five, three recorded 2026-11-09 and SE-R4 and SE-R5 on 2026-11-20 (see
   Corrections). Nulls and failures are reported, not retracted.
 - **Manifest** (`MANIFEST.sha256`): every tracked file pinned by sha256 (text LF-normalized, images raw).
 
@@ -374,6 +381,13 @@ Each withdrawn sentence is quoted as it stood, with what is true beside it.
   1.997, not 1.840. The ratio held because they lagged. The gate also blocked 4.5% of their own potentiation, so
   exp18 cannot say whether chance-coincidence potentiation holds the ratio, nor which of two readings explains the
   lag. SE-R4.
+- **SE-R5 (2026-11-20).** One sentence about exp19, written and pushed the same day on the branch that ran it, is
+  withdrawn after an outside read (Gemini) and a post hoc check (`exp19_posthoc_out.txt`). The README said:
+  "Both counts rose roughly in step with the extra volleys answered."
+
+  What is true: per own-group volley, potentiation events rose 15.4% and depression events 9.6%, against 11.8% more
+  volleys answered. Per answered volley, potentiation events rose 3.2% and depression events fell 1.9%, so the
+  depression count rose only because more volleys were answered. SE-R5.
 
 
 ---

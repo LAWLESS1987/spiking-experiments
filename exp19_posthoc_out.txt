@@ -1,0 +1,21 @@
+1. claimers' response shares, pooled over the eight seeds, by window
+   as registered: onset to onset + 20 ms  own: control 0.826, treatment 0.923, ratio 1.118 | other: control 0.030, treatment 0.055
+   centre - 4 ms to centre + 16 ms        own: control 0.826, treatment 0.923, ratio 1.118 | other: control 0.030, treatment 0.055
+   centre - 1 ms to centre + 19 ms        own: control 0.808, treatment 0.923, ratio 1.142 | other: control 0.030, treatment 0.055
+   centre to centre + 20 ms               own: control 0.658, treatment 0.745, ratio 1.132 | other: control 0.027, treatment 0.053
+
+2. events per answered own-group volley (answered = registered window), pooled over the eight seeds
+   n_pot10: control 13.895, treatment 14.345 (+3.2%)
+   n_dep10: control 6.242, treatment 6.122 (-1.9%)
+   check: dep10 per own-group volley recomputed here matches exp19_out.txt on 16/16 rows
+
+3. the published ratio per seed (end weights, unrounded)
+   seed 1: control 1.834, treatment 2.318, change +0.484
+   seed 2: control 1.561, treatment 1.923, change +0.361
+   seed 3: control 1.915, treatment 2.089, change +0.174
+   seed 4: control 1.857, treatment 2.154, change +0.297
+   seed 5: control 1.902, treatment 2.158, change +0.255
+   seed 6: control 1.914, treatment 2.165, change +0.251
+   seed 7: control 1.902, treatment 2.200, change +0.298
+   seed 8: control 1.835, treatment 2.029, change +0.194
+   change: min +0.174, max +0.484, mean +0.289; higher on 8/8

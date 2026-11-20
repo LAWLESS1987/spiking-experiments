@@ -171,3 +171,15 @@ Run on TETSU, Brian2 2.10.1 and numpy 2.5.2, eight workers, from commit 5920d3c.
     per-group ratios above 2.0, against 2 of 24.
   - selectivity: control 1.83-3.05, treatment 2.07-3.44, higher on 6 of 8.
   - The histograms are in the log.
+
+---
+
+## Outside read (2026-11-20, after the result; everything above is unchanged)
+
+Gemini, signed out, read the pull request. The post hoc checks it led to are in `exp19_posthoc_out.txt`:
+- anchoring the 20 ms window at the volley's centre instead of its onset leaves the claimers' rise at 12-14%
+  (registered: 11.8%);
+- per answered volley, potentiation events rose 3.2% and depression events fell 1.9%;
+- every seed's ratio rose, by 0.17 to 0.48.
+
+One README sentence is withdrawn as SE-R5. The readings above stand.

@@ -1,5 +1,5 @@
 {
- "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when three were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix), SE-R2 (a bar for every experiment) and SE-R3 (what sets the ~1.9x ratio). SE-R4 recorded 2026-11-20 (five sentences about exp18).",
+ "what": "Claims this repository published and then withdrew. Read by research_grade.py: a withdrawn wording may appear anywhere only if its id is cited within `window` lines. Empty until 2026-11-09, when three were recorded: SE-R1 (exp5/exp6's failure shape, superseded by exp7's bug fix), SE-R2 (a bar for every experiment) and SE-R3 (what sets the ~1.9x ratio). SE-R4 recorded 2026-11-20 (five sentences about exp18). SE-R5 recorded 2026-11-20 (one sentence about exp19).",
  "window": 10,
  "coverage_floor": 5,
  "expect_dirs": [
@@ -92,6 +92,25 @@
    "records": [
     "README.md",
     "docs/SYNTHESIS_exp11-18_2026-11-20.md"
+   ]
+  },
+  {
+   "id": "SE-R5",
+   "date": "2026-11-20",
+   "claim": "That under exp19's tighter volley the potentiation and depression counts rose roughly in step with the extra volleys answered.",
+   "verbatim": [
+    "Both counts rose roughly in step with the extra volleys answered."
+   ],
+   "truth": "Per own-group volley, potentiation events rose 15.4% and depression events 9.6%, against 11.8% more volleys answered. Per answered volley (post hoc, exp19_posthoc_out.txt), potentiation events rose 3.2% and depression events fell 1.9%: the depression count rose only because more volleys were answered.",
+   "refuted_by": "An outside read of spiking-experiments#13 (Gemini, signed out, 2026-11-20) and the post hoc check it led to, exp19_posthoc.py, the same day.",
+   "patterns": [
+    "counts rose roughly in step with\\s+the\\s+extra volleys answered"
+   ],
+   "allow": [
+    "docs/RETRACTED.json"
+   ],
+   "records": [
+    "README.md"
    ]
   }
  ]
